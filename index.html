@@ -1,0 +1,2006 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OJAMS – Online Job Application Monitoring System</title>
+    <!-- Bootstrap 5 CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* ===== GLOBAL ===== */
+      :root {
+        --sidebar-width: 220px;
+        --primary: #0d6efd;
+        --success: #198754;
+        --danger: #dc3545;
+        --warning: #ffc107;
+        --sidebar-bg: #1e2a3a;
+        --sidebar-text: #cdd3da;
+        --sidebar-hover: #2d3f55;
+        --sidebar-active: #0d6efd;
+      }
+      body {
+        font-size: 0.875rem;
+        background: #f0f2f5;
+      }
+
+      /* ===== ROLE TOGGLE BAR ===== */
+      #role-bar {
+        background: var(--sidebar-bg);
+        padding: 6px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 1050;
+      }
+      #role-bar .brand {
+        color: #fff;
+        font-weight: 700;
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+      }
+      #role-bar .brand span {
+        color: var(--primary);
+      }
+      .role-btn {
+        padding: 4px 16px;
+        border: 1.5px solid #fff;
+        border-radius: 20px;
+        background: transparent;
+        color: #fff;
+        font-size: 0.78rem;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .role-btn.active {
+        background: var(--primary);
+        border-color: var(--primary);
+      }
+
+      /* ===== LAYOUT ===== */
+      #app-layout {
+        display: flex;
+        min-height: calc(100vh - 38px);
+      }
+
+      /* ===== SIDEBAR ===== */
+      #sidebar {
+        width: var(--sidebar-width);
+        background: var(--sidebar-bg);
+        color: var(--sidebar-text);
+        display: flex;
+        flex-direction: column;
+        padding-top: 10px;
+        flex-shrink: 0;
+        min-height: 100%;
+      }
+      #sidebar .sidebar-section {
+        padding: 4px 12px;
+        font-size: 0.68rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #6c8096;
+        margin-top: 10px;
+      }
+      #sidebar .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        color: var(--sidebar-text);
+        cursor: pointer;
+        border-radius: 6px;
+        margin: 2px 8px;
+        font-size: 0.83rem;
+        transition: background 0.15s;
+        text-decoration: none;
+      }
+      #sidebar .nav-item:hover {
+        background: var(--sidebar-hover);
+        color: #fff;
+      }
+      #sidebar .nav-item.active {
+        background: var(--sidebar-active);
+        color: #fff;
+      }
+      #sidebar .nav-item i {
+        font-size: 1rem;
+        width: 20px;
+        text-align: center;
+      }
+
+      /* ===== MAIN CONTENT ===== */
+      #main-content {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+      }
+      .page-section {
+        display: none;
+      }
+      .page-section.active {
+        display: block;
+      }
+
+      /* ===== LOGIN PAGE ===== */
+      #login-page {
+        min-height: calc(100vh - 38px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #1e2a3a 0%, #0d6efd22 100%);
+      }
+      .login-card {
+        width: 360px;
+      }
+
+      /* ===== CARDS ===== */
+      .stat-card {
+        border-radius: 10px;
+        padding: 16px 18px;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      }
+      .stat-card .stat-icon {
+        font-size: 2rem;
+        opacity: 0.85;
+      }
+      .stat-card .stat-val {
+        font-size: 1.6rem;
+        font-weight: 700;
+        line-height: 1;
+      }
+      .stat-card .stat-label {
+        font-size: 0.75rem;
+        opacity: 0.85;
+      }
+
+      /* ===== JOB CARDS ===== */
+      .job-card {
+        border-left: 4px solid var(--primary);
+        border-radius: 8px;
+      }
+      .job-card .badge-date {
+        font-size: 0.68rem;
+      }
+
+      /* ===== TABLE ===== */
+      .table th {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #6c757d;
+      }
+
+      /* ===== STATUS BADGE ===== */
+      .badge-pending {
+        background: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffc107;
+      }
+      .badge-approved {
+        background: #d1e7dd;
+        color: #0f5132;
+        border: 1px solid #198754;
+      }
+      .badge-rejected {
+        background: #f8d7da;
+        color: #842029;
+        border: 1px solid #dc3545;
+      }
+
+      /* ===== TOAST ===== */
+      #toast-container {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .toast-msg {
+        background: #1e2a3a;
+        color: #fff;
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-size: 0.83rem;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+        animation: fadeInUp 0.3s ease;
+        max-width: 280px;
+      }
+      .toast-msg.success {
+        border-left: 4px solid #198754;
+      }
+      .toast-msg.warning {
+        border-left: 4px solid #ffc107;
+      }
+      .toast-msg.danger {
+        border-left: 4px solid #dc3545;
+      }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ===== PAGE HEADER ===== */
+      .page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+        border-bottom: 1px solid #dee2e6;
+        padding-bottom: 10px;
+      }
+      .page-header h5 {
+        margin: 0;
+        font-weight: 700;
+        color: #1e2a3a;
+      }
+
+      /* ===== PROFILE ===== */
+      .profile-avatar {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background: var(--primary);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+      }
+      .info-row {
+        display: flex;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid #f0f0f0;
+      }
+      .info-row .info-label {
+        width: 150px;
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.8rem;
+      }
+      .info-row .info-val {
+        color: #212529;
+        font-size: 0.83rem;
+      }
+
+      /* Chart placeholder */
+      .chart-placeholder {
+        background: linear-gradient(135deg, #e9ecef, #dee2e6);
+        border-radius: 10px;
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6c757d;
+        font-size: 0.8rem;
+        border: 2px dashed #ced4da;
+      }
+      /* scrollable modal body */
+      .modal-body-scroll {
+        max-height: 70vh;
+        overflow-y: auto;
+      }
+
+      /* hide login when logged in */
+      body.logged-in #login-page {
+        display: none !important;
+      }
+      body.logged-in #app-layout {
+        display: flex !important;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ===================== TOAST CONTAINER ===================== -->
+    <div id="toast-container"></div>
+
+    <!-- ===================== ROLE BAR ===================== -->
+    <div id="role-bar">
+      <div class="brand">
+        OJ<span>AMS</span>
+        <small style="font-weight: 300; font-size: 0.7rem; color: #adb5bd"
+          >Online Job Application Monitoring System</small
+        >
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <span style="color: #adb5bd; font-size: 0.75rem">View as:</span>
+        <button
+          class="role-btn active"
+          id="btn-role-user"
+          onclick="setRole('user')"
+        >
+          👤 User
+        </button>
+        <button class="role-btn" id="btn-role-admin" onclick="setRole('admin')">
+          🛠 Admin
+        </button>
+      </div>
+    </div>
+
+    <!-- ===================== LOGIN PAGE ===================== -->
+    <div id="login-page">
+      <div class="login-card card shadow-lg border-0">
+        <div class="card-body p-4">
+          <div class="text-center mb-3">
+            <div style="font-size: 2.5rem; color: var(--primary)">
+              <i class="bi bi-briefcase-fill"></i>
+            </div>
+            <h5 class="fw-bold mt-1 mb-0">OJAMS</h5>
+            <small class="text-muted"
+              >Online Job Application Monitoring System</small
+            >
+          </div>
+          <div id="login-role-badge" class="text-center mb-3">
+            <span class="badge bg-primary px-3 py-1">User Login</span>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Username</label>
+            <input
+              type="text"
+              id="inp-username"
+              class="form-control form-control-sm"
+              placeholder="Enter username"
+              value="user1"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Password</label>
+            <div class="input-group input-group-sm">
+              <input
+                type="password"
+                id="inp-password"
+                class="form-control"
+                placeholder="Enter password"
+                value="password"
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                onclick="togglePassVis()"
+              >
+                <i class="bi bi-eye" id="eye-icon"></i>
+              </button>
+            </div>
+          </div>
+          <div class="d-grid mb-2">
+            <button class="btn btn-primary btn-sm" onclick="doLogin()">
+              <i class="bi bi-box-arrow-in-right me-1"></i>Login
+            </button>
+          </div>
+          <div class="text-center">
+            <a
+              href="#"
+              class="small text-primary"
+              onclick="openModal('modal-register')"
+              >Register New Account</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== APP LAYOUT ===================== -->
+    <div id="app-layout" style="display: none">
+      <!-- SIDEBAR -->
+      <nav id="sidebar"></nav>
+
+      <!-- MAIN CONTENT -->
+      <div id="main-content">
+        <!-- ========== USER SECTIONS ========== -->
+
+        <!-- B. Browse Jobs -->
+        <div class="page-section" id="sec-browse">
+          <div class="page-header">
+            <h5><i class="bi bi-search me-2 text-primary"></i>Browse Jobs</h5>
+            <input
+              class="form-control form-control-sm w-auto"
+              placeholder="Search jobs…"
+              oninput="filterJobs(this.value)"
+            />
+          </div>
+          <div id="job-list" class="row g-3"></div>
+        </div>
+
+        <!-- D. My Applications -->
+        <div class="page-section" id="sec-myapps">
+          <div class="page-header">
+            <h5>
+              <i class="bi bi-file-earmark-text me-2 text-primary"></i>My
+              Applications
+            </h5>
+          </div>
+          <div class="card border-0 shadow-sm">
+            <div class="card-body p-0">
+              <table class="table table-hover mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>#</th>
+                    <th>Job Title</th>
+                    <th>Company</th>
+                    <th>Date Applied</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="my-apps-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- E. Profile Settings -->
+        <div class="page-section" id="sec-profile">
+          <div class="page-header">
+            <h5>
+              <i class="bi bi-person-circle me-2 text-primary"></i>Profile
+              Settings
+            </h5>
+          </div>
+          <div class="card border-0 shadow-sm p-4" style="max-width: 600px">
+            <div class="d-flex align-items-center gap-3 mb-4">
+              <div class="profile-avatar">
+                <i class="bi bi-person-fill"></i>
+              </div>
+              <div>
+                <div class="fw-bold fs-6" id="profile-name">Juan Dela Cruz</div>
+                <div class="text-muted small" id="profile-email">
+                  juan@email.com
+                </div>
+              </div>
+            </div>
+            <div id="profile-view">
+              <div class="info-row">
+                <span class="info-label">Full Name</span
+                ><span class="info-val" id="pv-name">Juan Dela Cruz</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Email</span
+                ><span class="info-val" id="pv-email">juan@email.com</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Contact Number</span
+                ><span class="info-val" id="pv-contact">09123456789</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Password</span
+                ><span class="info-val">••••••••</span>
+              </div>
+              <div class="mt-3">
+                <button
+                  class="btn btn-primary btn-sm"
+                  onclick="toggleProfileEdit(true)"
+                >
+                  <i class="bi bi-pencil me-1"></i>Edit Profile
+                </button>
+              </div>
+            </div>
+            <div id="profile-edit" style="display: none">
+              <div class="mb-2">
+                <label class="form-label fw-semibold small">Full Name</label>
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  id="pe-name"
+                  value="Juan Dela Cruz"
+                />
+              </div>
+              <div class="mb-2">
+                <label class="form-label fw-semibold small">Email</label>
+                <input
+                  type="email"
+                  class="form-control form-control-sm"
+                  id="pe-email"
+                  value="juan@email.com"
+                />
+              </div>
+              <div class="mb-2">
+                <label class="form-label fw-semibold small"
+                  >Contact Number</label
+                >
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  id="pe-contact"
+                  value="09123456789"
+                />
+              </div>
+              <div class="mb-2">
+                <label class="form-label fw-semibold small">New Password</label>
+                <input
+                  type="password"
+                  class="form-control form-control-sm"
+                  placeholder="Leave blank to keep current"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold small"
+                  >Profile Photo</label
+                >
+                <input
+                  type="file"
+                  class="form-control form-control-sm"
+                  accept="image/*"
+                />
+              </div>
+              <div class="d-flex gap-2">
+                <button class="btn btn-success btn-sm" onclick="saveProfile()">
+                  <i class="bi bi-check-lg me-1"></i>Save
+                </button>
+                <button
+                  class="btn btn-outline-secondary btn-sm"
+                  onclick="toggleProfileEdit(false)"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========== ADMIN SECTIONS ========== -->
+
+        <!-- A. Dashboard -->
+        <div class="page-section" id="sec-dashboard">
+          <div class="page-header">
+            <h5>
+              <i class="bi bi-speedometer2 me-2 text-primary"></i>Dashboard
+            </h5>
+            <span class="text-muted small">Welcome back, Admin!</span>
+          </div>
+          <!-- Stat Cards -->
+          <div class="row g-3 mb-4" id="stat-cards">
+            <div class="col-6 col-md-3">
+              <div
+                class="stat-card"
+                style="background: linear-gradient(135deg, #0d6efd, #0a58ca)"
+              >
+                <div class="stat-icon">
+                  <i class="bi bi-briefcase-fill"></i>
+                </div>
+                <div>
+                  <div class="stat-val">12</div>
+                  <div class="stat-label">Total Job Posts</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div
+                class="stat-card"
+                style="background: linear-gradient(135deg, #198754, #146c43)"
+              >
+                <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
+                <div>
+                  <div class="stat-val">48</div>
+                  <div class="stat-label">Total Applicants</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div
+                class="stat-card"
+                style="background: linear-gradient(135deg, #ffc107, #cc9a06)"
+              >
+                <div class="stat-icon">
+                  <i class="bi bi-hourglass-split"></i>
+                </div>
+                <div>
+                  <div class="stat-val">21</div>
+                  <div class="stat-label">Pending</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div
+                class="stat-card"
+                style="background: linear-gradient(135deg, #0dcaf0, #0aa2c0)"
+              >
+                <div class="stat-icon"><i class="bi bi-check2-circle"></i></div>
+                <div>
+                  <div class="stat-val">19</div>
+                  <div class="stat-label">Approved</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Activity Table -->
+          <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white fw-semibold py-2">
+              Recent Activity
+            </div>
+            <div class="card-body p-0">
+              <table class="table table-sm table-hover mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Activity</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="activity-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- B. Manage Jobs -->
+        <div class="page-section" id="sec-manage-jobs">
+          <div class="page-header">
+            <h5>
+              <i class="bi bi-briefcase me-2 text-primary"></i>Manage Jobs
+            </h5>
+            <button
+              class="btn btn-primary btn-sm"
+              onclick="openModal('modal-add-job')"
+            >
+              <i class="bi bi-plus-lg me-1"></i>Add New Job
+            </button>
+          </div>
+          <div class="card border-0 shadow-sm">
+            <div class="card-body p-0">
+              <table class="table table-hover mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>#</th>
+                    <th>Job Title</th>
+                    <th>Company</th>
+                    <th>Date Posted</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-jobs-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- C. Applications -->
+        <div class="page-section" id="sec-applications">
+          <div class="page-header">
+            <h5>
+              <i class="bi bi-folder2-open me-2 text-primary"></i>Applications
+            </h5>
+          </div>
+          <div class="card border-0 shadow-sm">
+            <div class="card-body p-0">
+              <table class="table table-hover mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>#</th>
+                    <th>Applicant</th>
+                    <th>Job Title</th>
+                    <th>Date Applied</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-apps-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- D. Reports -->
+        <div class="page-section" id="sec-reports">
+          <div class="page-header">
+            <h5>
+              <i class="bi bi-bar-chart-line me-2 text-primary"></i>Reports &
+              Monitoring
+            </h5>
+            <button
+              class="btn btn-success btn-sm"
+              onclick="
+                showToast('Download started (Prototype Only)', 'success')
+              "
+            >
+              <i class="bi bi-download me-1"></i>Download Report
+            </button>
+          </div>
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white fw-semibold py-2">
+                  Applicants per Job
+                </div>
+                <div class="card-body p-0">
+                  <table class="table table-sm mb-0">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Job Title</th>
+                        <th>Company</th>
+                        <th>Applicants</th>
+                      </tr>
+                    </thead>
+                    <tbody id="report-per-job"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white fw-semibold py-2">
+                  Monthly Application Report
+                </div>
+                <div class="card-body">
+                  <div class="chart-placeholder">
+                    <i class="bi bi-bar-chart-fill me-2"></i>Chart Placeholder
+                    (Backend Required)
+                  </div>
+                  <table class="table table-sm mt-3 mb-0">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Month</th>
+                        <th>Applications</th>
+                        <th>Approved</th>
+                        <th>Rejected</th>
+                      </tr>
+                    </thead>
+                    <tbody id="report-monthly"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /main-content -->
+    </div>
+    <!-- /app-layout -->
+
+    <!-- ===================== MODALS ===================== -->
+
+    <!-- REGISTER MODAL -->
+    <div class="modal fade" id="modal-register" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title fw-bold">
+              <i class="bi bi-person-plus me-2"></i>Register New Account
+            </h6>
+            <button
+              type="button"
+              class="btn-close btn-sm"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body modal-body-scroll">
+            <div class="row g-2">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Full Name</label>
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  placeholder="e.g. Juan Dela Cruz"
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Email</label>
+                <input
+                  type="email"
+                  class="form-control form-control-sm"
+                  placeholder="email@example.com"
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Username</label>
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  placeholder="Choose a username"
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small"
+                  >Contact Number</label
+                >
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  placeholder="09XXXXXXXXX"
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Password</label>
+                <input
+                  type="password"
+                  class="form-control form-control-sm"
+                  placeholder="Create password"
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small"
+                  >Confirm Password</label
+                >
+                <input
+                  type="password"
+                  class="form-control form-control-sm"
+                  placeholder="Repeat password"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+              Cancel
+            </button>
+            <button class="btn btn-primary btn-sm" onclick="doRegister()">
+              <i class="bi bi-person-check me-1"></i>Register
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APPLICATION FORM MODAL -->
+    <div class="modal fade" id="modal-apply" tabindex="-1">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title fw-bold">
+              <i class="bi bi-file-earmark-person me-2"></i>Job Application Form
+            </h6>
+            <button
+              type="button"
+              class="btn-close btn-sm"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body modal-body-scroll">
+            <div class="mb-2 p-2 bg-light rounded">
+              <strong>Applying for:</strong>
+              <span id="apply-job-title" class="text-primary fw-bold"></span>
+              &nbsp;|&nbsp; <span id="apply-company" class="text-muted"></span>
+            </div>
+
+            <!-- PERSONAL INFO -->
+            <div class="card border-0 bg-light mb-3">
+              <div
+                class="card-header fw-semibold small bg-primary text-white py-1"
+              >
+                Personal Information
+              </div>
+              <div class="card-body pb-2">
+                <table class="table table-sm mb-0">
+                  <tbody>
+                    <tr>
+                      <td class="fw-semibold small" style="width: 35%">
+                        Full Name
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          placeholder="Last, First, Middle"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="fw-semibold small">Birthdate</td>
+                      <td>
+                        <input
+                          type="date"
+                          class="form-control form-control-sm"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="fw-semibold small">Age</td>
+                      <td>
+                        <input
+                          type="number"
+                          class="form-control form-control-sm"
+                          placeholder="Age"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="fw-semibold small">Address</td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          placeholder="Complete Address"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="fw-semibold small">Contact Number</td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          placeholder="09XXXXXXXXX"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- EDUCATIONAL ATTAINMENT -->
+            <div class="card border-0 bg-light mb-3">
+              <div
+                class="card-header fw-semibold small bg-success text-white py-1"
+              >
+                Educational Attainment
+              </div>
+              <div class="card-body pb-2">
+                <table class="table table-sm mb-0">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Level</th>
+                      <th>School Name</th>
+                      <th>Year Graduated</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="fw-semibold small">Elementary</td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          placeholder="School name"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          placeholder="Year"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="fw-semibold small">Junior High School</td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          placeholder="School name"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          placeholder="Year"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="fw-semibold small">Senior High School</td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          placeholder="School name"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          placeholder="Year"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="fw-semibold small">College</td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          placeholder="School name"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          placeholder="Year"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- SKILLS & EXPERIENCE -->
+            <div class="row g-2 mb-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Skills</label>
+                <textarea
+                  class="form-control form-control-sm"
+                  rows="3"
+                  placeholder="List your skills…"
+                ></textarea>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small"
+                  >Work Experience</label
+                >
+                <textarea
+                  class="form-control form-control-sm"
+                  rows="3"
+                  placeholder="Previous work experience…"
+                ></textarea>
+              </div>
+            </div>
+
+            <!-- ID UPLOAD -->
+            <div class="mb-2">
+              <label class="form-label fw-semibold small"
+                >Upload Passport Size ID
+                <span class="text-muted">(2x2 photo)</span></label
+              >
+              <input
+                type="file"
+                class="form-control form-control-sm"
+                accept="image/*"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+              Cancel
+            </button>
+            <button
+              class="btn btn-primary btn-sm"
+              onclick="submitApplication()"
+            >
+              <i class="bi bi-send me-1"></i>Submit Application
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADD/EDIT JOB MODAL -->
+    <div class="modal fade" id="modal-add-job" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title fw-bold" id="job-modal-title">
+              <i class="bi bi-briefcase me-2"></i>Add New Job
+            </h6>
+            <button
+              type="button"
+              class="btn-close btn-sm"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="edit-job-idx" value="-1" />
+            <div class="row g-2">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Job Title</label>
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  id="jf-title"
+                  placeholder="e.g. Software Engineer"
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Company Name</label>
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  id="jf-company"
+                  placeholder="Company"
+                />
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold small"
+                  >Job Description</label
+                >
+                <textarea
+                  class="form-control form-control-sm"
+                  id="jf-desc"
+                  rows="2"
+                  placeholder="Brief description…"
+                ></textarea>
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold small"
+                  >Qualifications</label
+                >
+                <textarea
+                  class="form-control form-control-sm"
+                  id="jf-qual"
+                  rows="2"
+                  placeholder="Required qualifications…"
+                ></textarea>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Status</label>
+                <select class="form-select form-select-sm" id="jf-status">
+                  <option>Open</option>
+                  <option>Closed</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Date Posted</label>
+                <input
+                  type="date"
+                  class="form-control form-control-sm"
+                  id="jf-date"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+              Cancel
+            </button>
+            <button class="btn btn-primary btn-sm" onclick="saveJob()">
+              <i class="bi bi-save me-1"></i>Save Job
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW APPLICATION DETAILS MODAL -->
+    <div class="modal fade" id="modal-view-app" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title fw-bold">
+              <i class="bi bi-person-lines-fill me-2"></i>Applicant Details
+            </h6>
+            <button
+              type="button"
+              class="btn-close btn-sm"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body" id="view-app-body"></div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOGOUT CONFIRMATION MODAL -->
+    <div class="modal fade" id="modal-logout" tabindex="-1">
+      <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body text-center py-4">
+            <div style="font-size: 2.5rem; color: #dc3545">
+              <i class="bi bi-box-arrow-left"></i>
+            </div>
+            <h6 class="fw-bold mt-2">Confirm Logout</h6>
+            <p class="text-muted small mb-3">
+              Are you sure you want to logout?
+            </p>
+            <div class="d-flex justify-content-center gap-2">
+              <button class="btn btn-danger btn-sm px-4" onclick="doLogout()">
+                Yes, Logout
+              </button>
+              <button
+                class="btn btn-outline-secondary btn-sm px-4"
+                data-bs-dismiss="modal"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DELETE JOB CONFIRMATION MODAL -->
+    <div class="modal fade" id="modal-del-job" tabindex="-1">
+      <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body text-center py-4">
+            <div style="font-size: 2.5rem; color: #dc3545">
+              <i class="bi bi-trash3"></i>
+            </div>
+            <h6 class="fw-bold mt-2">Delete Job?</h6>
+            <p class="text-muted small mb-3">
+              This action cannot be undone (Prototype Only).
+            </p>
+            <div class="d-flex justify-content-center gap-2">
+              <button
+                class="btn btn-danger btn-sm px-4"
+                onclick="confirmDeleteJob()"
+              >
+                Delete
+              </button>
+              <button
+                class="btn btn-outline-secondary btn-sm px-4"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      /* =====================================================
+   OJAMS – Prototype JavaScript
+   ===================================================== */
+
+      // ─── STATE ───────────────────────────────────────────
+      let currentRole = "user"; // 'user' | 'admin'
+      let currentSection = "";
+      let jobDeleteIdx = -1;
+      let loggedIn = false;
+
+      // ─── DUMMY DATA ───────────────────────────────────────
+      const jobs = [
+        {
+          title: "Software Engineer",
+          company: "TechCorp PH",
+          desc: "Develop and maintain web applications.",
+          qual: "BS Computer Science, 1 yr exp",
+          date: "2026-03-01",
+          status: "Open",
+        },
+        {
+          title: "Data Analyst",
+          company: "DataSync Inc.",
+          desc: "Analyze and interpret complex data sets.",
+          qual: "BS Statistics/IT, SQL skills",
+          date: "2026-03-05",
+          status: "Open",
+        },
+        {
+          title: "Marketing Specialist",
+          company: "BrandBoost Co.",
+          desc: "Plan and execute marketing campaigns.",
+          qual: "BS Marketing, social media exp",
+          date: "2026-03-08",
+          status: "Open",
+        },
+        {
+          title: "Customer Support Rep",
+          company: "Helpdesk PH",
+          desc: "Handle customer inquiries and complaints.",
+          qual: "Any 4-yr course, comm skills",
+          date: "2026-03-10",
+          status: "Open",
+        },
+        {
+          title: "Graphic Designer",
+          company: "PixelCraft Studio",
+          desc: "Create visual concepts and designs.",
+          qual: "BS Fine Arts / Multimedia",
+          date: "2026-03-12",
+          status: "Open",
+        },
+        {
+          title: "HR Assistant",
+          company: "PeopleFirst Corp.",
+          desc: "Support HR operations and recruitment.",
+          qual: "BS Psychology / HRDM",
+          date: "2026-03-15",
+          status: "Closed",
+        },
+      ];
+
+      const myApplications = [
+        {
+          title: "Software Engineer",
+          company: "TechCorp PH",
+          date: "2026-03-02",
+          status: "Approved",
+        },
+        {
+          title: "Data Analyst",
+          company: "DataSync Inc.",
+          date: "2026-03-06",
+          status: "Pending",
+        },
+        {
+          title: "Marketing Specialist",
+          company: "BrandBoost Co.",
+          date: "2026-03-09",
+          status: "Rejected",
+        },
+      ];
+
+      const adminApplications = [
+        {
+          name: "Juan Dela Cruz",
+          title: "Software Engineer",
+          company: "TechCorp PH",
+          date: "2026-03-02",
+          status: "Approved",
+        },
+        {
+          name: "Maria Santos",
+          title: "Data Analyst",
+          company: "DataSync Inc.",
+          date: "2026-03-06",
+          status: "Pending",
+        },
+        {
+          name: "Pedro Reyes",
+          title: "Marketing Specialist",
+          company: "BrandBoost Co.",
+          date: "2026-03-09",
+          status: "Rejected",
+        },
+        {
+          name: "Ana Garcia",
+          title: "Customer Support Rep",
+          company: "Helpdesk PH",
+          date: "2026-03-11",
+          status: "Pending",
+        },
+        {
+          name: "Luis Bautista",
+          title: "Graphic Designer",
+          company: "PixelCraft Studio",
+          date: "2026-03-13",
+          status: "Pending",
+        },
+      ];
+
+      const activityLog = [
+        {
+          date: "2026-03-22",
+          time: "09:15 AM",
+          activity: "Juan Dela Cruz applied for Software Engineer",
+          status: "Approved",
+        },
+        {
+          date: "2026-03-22",
+          time: "10:02 AM",
+          activity: "Maria Santos applied for Data Analyst",
+          status: "Pending",
+        },
+        {
+          date: "2026-03-21",
+          time: "02:30 PM",
+          activity: "Pedro Reyes applied for Marketing Specialist",
+          status: "Rejected",
+        },
+        {
+          date: "2026-03-21",
+          time: "04:45 PM",
+          activity: "Ana Garcia applied for Customer Support Rep",
+          status: "Pending",
+        },
+        {
+          date: "2026-03-20",
+          time: "11:00 AM",
+          activity: "New job posted: Graphic Designer",
+          status: "—",
+        },
+      ];
+
+      const monthlyReport = [
+        { month: "January 2026", apps: 14, approved: 8, rejected: 3 },
+        { month: "February 2026", apps: 19, approved: 11, rejected: 5 },
+        { month: "March 2026", apps: 15, approved: 8, rejected: 4 },
+      ];
+
+      // ─── USER SIDEBAR MENU ────────────────────────────────
+      const userMenu = [
+        { icon: "bi-search", label: "Browse Jobs", section: "sec-browse" },
+        {
+          icon: "bi-file-earmark-text",
+          label: "My Applications",
+          section: "sec-myapps",
+        },
+        {
+          icon: "bi-person-circle",
+          label: "Profile Settings",
+          section: "sec-profile",
+        },
+        { icon: "bi-box-arrow-left", label: "Logout", section: "logout" },
+      ];
+
+      // ─── ADMIN SIDEBAR MENU ──────────────────────────────
+      const adminMenu = [
+        {
+          icon: "bi-speedometer2",
+          label: "Dashboard",
+          section: "sec-dashboard",
+        },
+        {
+          icon: "bi-briefcase",
+          label: "Manage Jobs",
+          section: "sec-manage-jobs",
+        },
+        {
+          icon: "bi-folder2-open",
+          label: "Applications",
+          section: "sec-applications",
+        },
+        { icon: "bi-bar-chart-line", label: "Reports", section: "sec-reports" },
+        { icon: "bi-box-arrow-left", label: "Logout", section: "logout" },
+      ];
+
+      /* =====================================================
+   ROLE TOGGLE
+   ===================================================== */
+      function setRole(role) {
+        currentRole = role;
+        document
+          .getElementById("btn-role-user")
+          .classList.toggle("active", role === "user");
+        document
+          .getElementById("btn-role-admin")
+          .classList.toggle("active", role === "admin");
+
+        // Update login badge
+        const badge = document.getElementById("login-role-badge");
+        if (badge) {
+          badge.innerHTML =
+            role === "admin"
+              ? '<span class="badge bg-danger px-3 py-1">Admin Login</span>'
+              : '<span class="badge bg-primary px-3 py-1">User Login</span>';
+        }
+
+        // If already logged in, switch view
+        if (loggedIn) buildLayout();
+      }
+
+      /* =====================================================
+   LOGIN / LOGOUT
+   ===================================================== */
+      function doLogin() {
+        loggedIn = true;
+        document.getElementById("login-page").style.display = "none";
+        document.getElementById("app-layout").style.display = "flex";
+        buildLayout();
+        showToast("Logged in successfully!", "success");
+      }
+
+      function doLogout() {
+        const m = bootstrap.Modal.getInstance(
+          document.getElementById("modal-logout"),
+        );
+        if (m) m.hide();
+        loggedIn = false;
+        document.getElementById("login-page").style.display = "flex";
+        document.getElementById("app-layout").style.display = "none";
+        showToast("Logged out successfully.", "warning");
+      }
+
+      function togglePassVis() {
+        const inp = document.getElementById("inp-password");
+        const icon = document.getElementById("eye-icon");
+        if (inp.type === "password") {
+          inp.type = "text";
+          icon.className = "bi bi-eye-slash";
+        } else {
+          inp.type = "password";
+          icon.className = "bi bi-eye";
+        }
+      }
+
+      /* =====================================================
+   LAYOUT BUILDER
+   ===================================================== */
+      function buildLayout() {
+        buildSidebar();
+        const defaultSection =
+          currentRole === "admin" ? "sec-dashboard" : "sec-browse";
+        navigateTo(defaultSection);
+        populateAll();
+      }
+
+      function buildSidebar() {
+        const menu = currentRole === "admin" ? adminMenu : userMenu;
+        const sidebar = document.getElementById("sidebar");
+
+        let html = `<div class="px-3 py-2" style="color:#6c8096;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;">
+    ${currentRole === "admin" ? "🛠 Admin Panel" : "👤 User Panel"}
+  </div>`;
+
+        menu.forEach((item, i) => {
+          const isDanger = item.section === "logout";
+          html += `<a class="nav-item ${isDanger ? "text-danger-emphasis" : ""}"
+                id="nav-${item.section}"
+                onclick="handleNav('${item.section}')"
+                style="${isDanger ? "color:#dc3545;" : ""}">
+               <i class="bi ${item.icon}"></i>${item.label}
+             </a>`;
+        });
+
+        sidebar.innerHTML = html;
+      }
+
+      function handleNav(section) {
+        if (section === "logout") {
+          openModal("modal-logout");
+          return;
+        }
+        navigateTo(section);
+      }
+
+      function navigateTo(section) {
+        currentSection = section;
+        // Hide all sections
+        document
+          .querySelectorAll(".page-section")
+          .forEach((s) => s.classList.remove("active"));
+        // Show target
+        const target = document.getElementById(section);
+        if (target) target.classList.add("active");
+        // Update active nav
+        document
+          .querySelectorAll("#sidebar .nav-item")
+          .forEach((n) => n.classList.remove("active"));
+        const activeNav = document.getElementById("nav-" + section);
+        if (activeNav) activeNav.classList.add("active");
+      }
+
+      /* =====================================================
+   POPULATE DATA
+   ===================================================== */
+      function populateAll() {
+        renderJobCards(jobs);
+        renderMyApps();
+        renderAdminJobs();
+        renderAdminApps();
+        renderActivityLog();
+        renderReports();
+      }
+
+      // ── JOB CARDS (User Browse) ──────────────────────────
+      function renderJobCards(list) {
+        const container = document.getElementById("job-list");
+        if (!container) return;
+        container.innerHTML = list
+          .map(
+            (j, i) => `
+    <div class="col-md-6 col-lg-4">
+      <div class="card job-card border shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start mb-1">
+            <span class="fw-bold">${j.title}</span>
+            <span class="badge ${j.status === "Open" ? "bg-success" : "bg-secondary"} badge-date">${j.status}</span>
+          </div>
+          <div class="text-muted small mb-1"><i class="bi bi-building me-1"></i>${j.company}</div>
+          <div class="small mb-1">${j.desc}</div>
+          <div class="small text-muted mb-1"><i class="bi bi-check2-square me-1"></i>${j.qual}</div>
+          <div class="text-muted badge-date small"><i class="bi bi-calendar3 me-1"></i>Posted: ${j.date}</div>
+        </div>
+        <div class="card-footer bg-white border-0">
+          <button class="btn btn-primary btn-sm w-100 ${j.status === "Closed" ? "disabled" : ""}"
+                  onclick="openApplyModal(${i})">
+            <i class="bi bi-send me-1"></i>${j.status === "Closed" ? "Position Closed" : "Apply Now"}
+          </button>
+        </div>
+      </div>
+    </div>
+  `,
+          )
+          .join("");
+      }
+
+      function filterJobs(q) {
+        const filtered = jobs.filter(
+          (j) =>
+            j.title.toLowerCase().includes(q.toLowerCase()) ||
+            j.company.toLowerCase().includes(q.toLowerCase()),
+        );
+        renderJobCards(filtered);
+      }
+
+      // ── MY APPLICATIONS ──────────────────────────────────
+      function renderMyApps() {
+        const tbody = document.getElementById("my-apps-tbody");
+        if (!tbody) return;
+        tbody.innerHTML = myApplications
+          .map(
+            (a, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td>${a.title}</td>
+      <td>${a.company}</td>
+      <td>${a.date}</td>
+      <td><span class="badge ${statusBadge(a.status)}">${a.status}</span></td>
+    </tr>
+  `,
+          )
+          .join("");
+      }
+
+      // ── ADMIN JOBS ────────────────────────────────────────
+      function renderAdminJobs() {
+        const tbody = document.getElementById("admin-jobs-tbody");
+        if (!tbody) return;
+        tbody.innerHTML = jobs
+          .map(
+            (j, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td>${j.title}</td>
+      <td>${j.company}</td>
+      <td>${j.date}</td>
+      <td><span class="badge ${j.status === "Open" ? "bg-success" : "bg-secondary"}">${j.status}</span></td>
+      <td>
+        <button class="btn btn-outline-primary btn-sm py-0 px-1" onclick="editJob(${i})" title="Edit"><i class="bi bi-pencil"></i></button>
+        <button class="btn btn-outline-danger  btn-sm py-0 px-1 ms-1" onclick="deleteJob(${i})" title="Delete"><i class="bi bi-trash"></i></button>
+      </td>
+    </tr>
+  `,
+          )
+          .join("");
+      }
+
+      // ── ADMIN APPLICATIONS ────────────────────────────────
+      function renderAdminApps() {
+        const tbody = document.getElementById("admin-apps-tbody");
+        if (!tbody) return;
+        tbody.innerHTML = adminApplications
+          .map(
+            (a, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td>${a.name}</td>
+      <td>${a.title}<br><small class="text-muted">${a.company}</small></td>
+      <td>${a.date}</td>
+      <td><span class="badge ${statusBadge(a.status)}">${a.status}</span></td>
+      <td>
+        <button class="btn btn-success   btn-sm py-0 px-1 me-1" onclick="updateAppStatus(${i},'Approved')" title="Approve"><i class="bi bi-check-lg"></i></button>
+        <button class="btn btn-danger    btn-sm py-0 px-1 me-1" onclick="updateAppStatus(${i},'Rejected')" title="Reject"><i class="bi bi-x-lg"></i></button>
+        <button class="btn btn-secondary btn-sm py-0 px-1"     onclick="viewAppDetails(${i})" title="View"><i class="bi bi-eye"></i></button>
+      </td>
+    </tr>
+  `,
+          )
+          .join("");
+      }
+
+      // ── ACTIVITY LOG ──────────────────────────────────────
+      function renderActivityLog() {
+        const tbody = document.getElementById("activity-tbody");
+        if (!tbody) return;
+        tbody.innerHTML = activityLog
+          .map(
+            (a) => `
+    <tr>
+      <td>${a.date}</td>
+      <td>${a.time}</td>
+      <td>${a.activity}</td>
+      <td><span class="badge ${statusBadge(a.status)}">${a.status}</span></td>
+    </tr>
+  `,
+          )
+          .join("");
+      }
+
+      // ── REPORTS ───────────────────────────────────────────
+      function renderReports() {
+        const perJob = document.getElementById("report-per-job");
+        if (perJob) {
+          // Count applicants per job
+          const counts = {};
+          adminApplications.forEach((a) => {
+            const key = a.title + "|" + a.company;
+            counts[key] = (counts[key] || 0) + 1;
+          });
+          perJob.innerHTML = Object.entries(counts)
+            .map(([k, v]) => {
+              const [title, company] = k.split("|");
+              return `<tr><td>${title}</td><td>${company}</td><td><span class="badge bg-primary">${v}</span></td></tr>`;
+            })
+            .join("");
+        }
+
+        const monthly = document.getElementById("report-monthly");
+        if (monthly) {
+          monthly.innerHTML = monthlyReport
+            .map(
+              (m) => `
+      <tr>
+        <td>${m.month}</td>
+        <td>${m.apps}</td>
+        <td><span class="badge badge-approved">${m.approved}</span></td>
+        <td><span class="badge badge-rejected">${m.rejected}</span></td>
+      </tr>
+    `,
+            )
+            .join("");
+        }
+      }
+
+      /* =====================================================
+   APPLICATION FORM
+   ===================================================== */
+      let currentJobIdx = -1;
+
+      function openApplyModal(idx) {
+        currentJobIdx = idx;
+        const job = jobs[idx];
+        document.getElementById("apply-job-title").textContent = job.title;
+        document.getElementById("apply-company").textContent = job.company;
+        openModal("modal-apply");
+      }
+
+      function submitApplication() {
+        const modal = bootstrap.Modal.getInstance(
+          document.getElementById("modal-apply"),
+        );
+        if (modal) modal.hide();
+
+        // Add to My Applications (prototype)
+        if (currentJobIdx >= 0) {
+          const job = jobs[currentJobIdx];
+          const today = new Date().toISOString().split("T")[0];
+          myApplications.push({
+            title: job.title,
+            company: job.company,
+            date: today,
+            status: "Pending",
+          });
+          adminApplications.push({
+            name: "Juan Dela Cruz",
+            title: job.title,
+            company: job.company,
+            date: today,
+            status: "Pending",
+          });
+          renderMyApps();
+          renderAdminApps();
+          // Update dashboard stats
+          document.querySelector(
+            "#stat-cards .row .col-6:nth-child(2) .stat-val",
+          ) &&
+            (document.querySelectorAll("#stat-cards .stat-val")[1].textContent =
+              adminApplications.length);
+        }
+
+        showToast("Application Submitted (Prototype Only)", "success");
+      }
+
+      /* =====================================================
+   REGISTRATION
+   ===================================================== */
+      function doRegister() {
+        const modal = bootstrap.Modal.getInstance(
+          document.getElementById("modal-register"),
+        );
+        if (modal) modal.hide();
+        showToast("Account registered (Prototype Only)!", "success");
+      }
+
+      /* =====================================================
+   PROFILE
+   ===================================================== */
+      function toggleProfileEdit(show) {
+        document.getElementById("profile-view").style.display = show
+          ? "none"
+          : "block";
+        document.getElementById("profile-edit").style.display = show
+          ? "block"
+          : "none";
+      }
+
+      function saveProfile() {
+        const name = document.getElementById("pe-name").value;
+        const email = document.getElementById("pe-email").value;
+        const contact = document.getElementById("pe-contact").value;
+
+        document.getElementById("pv-name").textContent = name;
+        document.getElementById("pv-email").textContent = email;
+        document.getElementById("pv-contact").textContent = contact;
+        document.getElementById("profile-name").textContent = name;
+        document.getElementById("profile-email").textContent = email;
+
+        toggleProfileEdit(false);
+        showToast("Profile updated (Prototype Only)", "success");
+      }
+
+      /* =====================================================
+   ADMIN – MANAGE JOBS
+   ===================================================== */
+      function editJob(idx) {
+        const j = jobs[idx];
+        document.getElementById("job-modal-title").innerHTML =
+          '<i class="bi bi-pencil me-2"></i>Edit Job';
+        document.getElementById("edit-job-idx").value = idx;
+        document.getElementById("jf-title").value = j.title;
+        document.getElementById("jf-company").value = j.company;
+        document.getElementById("jf-desc").value = j.desc;
+        document.getElementById("jf-qual").value = j.qual;
+        document.getElementById("jf-status").value = j.status;
+        document.getElementById("jf-date").value = j.date;
+        openModal("modal-add-job");
+      }
+
+      function saveJob() {
+        const idx = parseInt(document.getElementById("edit-job-idx").value);
+        const newJob = {
+          title: document.getElementById("jf-title").value || "Untitled Job",
+          company: document.getElementById("jf-company").value || "N/A",
+          desc: document.getElementById("jf-desc").value,
+          qual: document.getElementById("jf-qual").value,
+          status: document.getElementById("jf-status").value,
+          date:
+            document.getElementById("jf-date").value ||
+            new Date().toISOString().split("T")[0],
+        };
+
+        if (idx === -1) {
+          jobs.push(newJob);
+        } else {
+          jobs[idx] = newJob;
+        }
+
+        const modal = bootstrap.Modal.getInstance(
+          document.getElementById("modal-add-job"),
+        );
+        if (modal) modal.hide();
+
+        // Reset form
+        document.getElementById("edit-job-idx").value = -1;
+        document.getElementById("job-modal-title").innerHTML =
+          '<i class="bi bi-briefcase me-2"></i>Add New Job';
+        ["jf-title", "jf-company", "jf-desc", "jf-qual"].forEach(
+          (id) => (document.getElementById(id).value = ""),
+        );
+
+        renderAdminJobs();
+        renderJobCards(jobs);
+        showToast(
+          idx === -1 ? "Job added successfully!" : "Job updated successfully!",
+          "success",
+        );
+      }
+
+      function deleteJob(idx) {
+        jobDeleteIdx = idx;
+        openModal("modal-del-job");
+      }
+
+      function confirmDeleteJob() {
+        if (jobDeleteIdx >= 0) {
+          jobs.splice(jobDeleteIdx, 1);
+          jobDeleteIdx = -1;
+          renderAdminJobs();
+          renderJobCards(jobs);
+        }
+        const modal = bootstrap.Modal.getInstance(
+          document.getElementById("modal-del-job"),
+        );
+        if (modal) modal.hide();
+        showToast("Job deleted (Prototype Only)", "danger");
+      }
+
+      /* =====================================================
+   ADMIN – APPLICATIONS
+   ===================================================== */
+      function updateAppStatus(idx, newStatus) {
+        adminApplications[idx].status = newStatus;
+        // Mirror to myApplications if same job
+        const app = adminApplications[idx];
+        const myApp = myApplications.find((a) => a.title === app.title);
+        if (myApp) myApp.status = newStatus;
+        renderAdminApps();
+        renderMyApps();
+        showToast(
+          `Application ${newStatus} (Prototype Only)`,
+          newStatus === "Approved" ? "success" : "danger",
+        );
+      }
+
+      function viewAppDetails(idx) {
+        const a = adminApplications[idx];
+        document.getElementById("view-app-body").innerHTML = `
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="info-row"><span class="info-label">Applicant Name</span><span class="info-val fw-bold">${a.name}</span></div>
+        <div class="info-row"><span class="info-label">Job Applied</span><span class="info-val">${a.title}</span></div>
+        <div class="info-row"><span class="info-label">Company</span><span class="info-val">${a.company}</span></div>
+        <div class="info-row"><span class="info-label">Date Applied</span><span class="info-val">${a.date}</span></div>
+        <div class="info-row"><span class="info-label">Status</span>
+          <span class="badge ${statusBadge(a.status)}">${a.status}</span>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="p-3 bg-light rounded text-muted small">
+          <i class="bi bi-info-circle me-1"></i>
+          Full applicant details (personal info, education, skills, uploaded ID) would appear here when connected to a backend.
+        </div>
+        <div class="mt-2">
+          <div class="fw-semibold small mb-1">Skills <span class="text-muted">(Sample)</span></div>
+          <div class="small">HTML, CSS, JavaScript, PHP, MySQL</div>
+        </div>
+        <div class="mt-2">
+          <div class="fw-semibold small mb-1">Experience <span class="text-muted">(Sample)</span></div>
+          <div class="small">1 year as Junior Developer at XYZ Company</div>
+        </div>
+      </div>
+    </div>
+  `;
+        openModal("modal-view-app");
+      }
+
+      /* =====================================================
+   UTILITY
+   ===================================================== */
+      function openModal(id) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const m = bootstrap.Modal.getOrCreateInstance(el);
+        m.show();
+      }
+
+      function statusBadge(status) {
+        if (status === "Approved") return "badge-approved";
+        if (status === "Rejected") return "badge-rejected";
+        if (status === "Pending") return "badge-pending";
+        return "bg-secondary";
+      }
+
+      function showToast(msg, type = "success") {
+        const container = document.getElementById("toast-container");
+        const div = document.createElement("div");
+        div.className = `toast-msg ${type}`;
+        div.innerHTML = `<i class="bi bi-${type === "success" ? "check-circle" : type === "danger" ? "x-circle" : "exclamation-circle"} me-2"></i>${msg}`;
+        container.appendChild(div);
+        setTimeout(() => div.remove(), 3500);
+      }
+
+      /* =====================================================
+   INIT
+   ===================================================== */
+      document.addEventListener("DOMContentLoaded", () => {
+        // Set today's date as default in job form
+        const jfDate = document.getElementById("jf-date");
+        if (jfDate) jfDate.value = new Date().toISOString().split("T")[0];
+
+        // Add New Job modal – reset on open
+        document
+          .getElementById("modal-add-job")
+          .addEventListener("show.bs.modal", function () {
+            const idx = parseInt(document.getElementById("edit-job-idx").value);
+            if (idx === -1) {
+              ["jf-title", "jf-company", "jf-desc", "jf-qual"].forEach(
+                (id) => (document.getElementById(id).value = ""),
+              );
+              document.getElementById("jf-status").value = "Open";
+              document.getElementById("jf-date").value = new Date()
+                .toISOString()
+                .split("T")[0];
+            }
+          });
+      });
+    </script>
+  </body>
+</html>
