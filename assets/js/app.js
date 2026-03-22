@@ -16,18 +16,22 @@
 ========================================================== */
 
 /* ── 1. State ─────────────────────────────────────────── */
-let currentRole    = "user";  // "user" | "admin"
+let currentRole = "user"; // "user" | "admin"
 let currentSection = "";
-let jobDeleteIdx   = -1;
-let currentJobIdx  = -1;
-let loggedIn       = false;
+let jobDeleteIdx = -1;
+let currentJobIdx = -1;
+let loggedIn = false;
 
 /* ── 2. Role Toggle ───────────────────────────────────── */
 function setRole(role) {
   currentRole = role;
 
-  document.getElementById("btn-role-user").classList.toggle("active", role === "user");
-  document.getElementById("btn-role-admin").classList.toggle("active", role === "admin");
+  document
+    .getElementById("btn-role-user")
+    .classList.toggle("active", role === "user");
+  document
+    .getElementById("btn-role-admin")
+    .classList.toggle("active", role === "admin");
 
   // Update login badge colour
   const badge = document.getElementById("login-role-badge");
@@ -52,7 +56,9 @@ function doLogin() {
 }
 
 function doLogout() {
-  const m = bootstrap.Modal.getInstance(document.getElementById("modal-logout"));
+  const m = bootstrap.Modal.getInstance(
+    document.getElementById("modal-logout"),
+  );
   if (m) m.hide();
 
   loggedIn = false;
@@ -62,7 +68,7 @@ function doLogout() {
 }
 
 function togglePassVis() {
-  const inp  = document.getElementById("inp-password");
+  const inp = document.getElementById("inp-password");
   const icon = document.getElementById("eye-icon");
   if (inp.type === "password") {
     inp.type = "text";
@@ -76,13 +82,14 @@ function togglePassVis() {
 /* ── 4. Layout Builder ────────────────────────────────── */
 function buildLayout() {
   buildSidebar();
-  const defaultSection = currentRole === "admin" ? "sec-dashboard" : "sec-browse";
+  const defaultSection =
+    currentRole === "admin" ? "sec-dashboard" : "sec-browse";
   navigateTo(defaultSection);
   populateAll();
 }
 
 function buildSidebar() {
-  const menu    = currentRole === "admin" ? adminMenu : userMenu;
+  const menu = currentRole === "admin" ? adminMenu : userMenu;
   const sidebar = document.getElementById("sidebar");
 
   let html = `<div class="px-3 py-2" style="color:#6c8096;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;">
@@ -115,12 +122,16 @@ function navigateTo(section) {
   currentSection = section;
 
   // Hide all sections, show target
-  document.querySelectorAll(".page-section").forEach((s) => s.classList.remove("active"));
+  document
+    .querySelectorAll(".page-section")
+    .forEach((s) => s.classList.remove("active"));
   const target = document.getElementById(section);
   if (target) target.classList.add("active");
 
   // Update active nav highlight
-  document.querySelectorAll("#sidebar .nav-item").forEach((n) => n.classList.remove("active"));
+  document
+    .querySelectorAll("#sidebar .nav-item")
+    .forEach((n) => n.classList.remove("active"));
   const activeNav = document.getElementById("nav-" + section);
   if (activeNav) activeNav.classList.add("active");
 }
@@ -140,7 +151,9 @@ function renderJobCards(list) {
   const container = document.getElementById("job-list");
   if (!container) return;
 
-  container.innerHTML = list.map((j, i) => `
+  container.innerHTML = list
+    .map(
+      (j, i) => `
     <div class="col-md-6 col-lg-4">
       <div class="card job-card border shadow-sm h-100">
         <div class="card-body">
@@ -161,7 +174,9 @@ function renderJobCards(list) {
         </div>
       </div>
     </div>
-  `).join("");
+  `,
+    )
+    .join("");
 }
 
 /** Live search filter for job cards */
@@ -169,7 +184,7 @@ function filterJobs(q) {
   const filtered = jobs.filter(
     (j) =>
       j.title.toLowerCase().includes(q.toLowerCase()) ||
-      j.company.toLowerCase().includes(q.toLowerCase())
+      j.company.toLowerCase().includes(q.toLowerCase()),
   );
   renderJobCards(filtered);
 }
@@ -179,7 +194,9 @@ function renderMyApps() {
   const tbody = document.getElementById("my-apps-tbody");
   if (!tbody) return;
 
-  tbody.innerHTML = myApplications.map((a, i) => `
+  tbody.innerHTML = myApplications
+    .map(
+      (a, i) => `
     <tr>
       <td>${i + 1}</td>
       <td>${a.title}</td>
@@ -187,7 +204,9 @@ function renderMyApps() {
       <td>${a.date}</td>
       <td><span class="badge ${statusBadge(a.status)}">${a.status}</span></td>
     </tr>
-  `).join("");
+  `,
+    )
+    .join("");
 }
 
 /** Render admin job management table */
@@ -195,7 +214,9 @@ function renderAdminJobs() {
   const tbody = document.getElementById("admin-jobs-tbody");
   if (!tbody) return;
 
-  tbody.innerHTML = jobs.map((j, i) => `
+  tbody.innerHTML = jobs
+    .map(
+      (j, i) => `
     <tr>
       <td>${i + 1}</td>
       <td>${j.title}</td>
@@ -213,7 +234,9 @@ function renderAdminJobs() {
         </button>
       </td>
     </tr>
-  `).join("");
+  `,
+    )
+    .join("");
 }
 
 /** Render admin applications table */
@@ -221,7 +244,9 @@ function renderAdminApps() {
   const tbody = document.getElementById("admin-apps-tbody");
   if (!tbody) return;
 
-  tbody.innerHTML = adminApplications.map((a, i) => `
+  tbody.innerHTML = adminApplications
+    .map(
+      (a, i) => `
     <tr>
       <td>${i + 1}</td>
       <td>${a.name}</td>
@@ -243,7 +268,9 @@ function renderAdminApps() {
         </button>
       </td>
     </tr>
-  `).join("");
+  `,
+    )
+    .join("");
 }
 
 /** Render recent activity table on the dashboard */
@@ -251,14 +278,18 @@ function renderActivityLog() {
   const tbody = document.getElementById("activity-tbody");
   if (!tbody) return;
 
-  tbody.innerHTML = activityLog.map((a) => `
+  tbody.innerHTML = activityLog
+    .map(
+      (a) => `
     <tr>
       <td>${a.date}</td>
       <td>${a.time}</td>
       <td>${a.activity}</td>
       <td><span class="badge ${statusBadge(a.status)}">${a.status}</span></td>
     </tr>
-  `).join("");
+  `,
+    )
+    .join("");
 }
 
 /** Render reports section tables */
@@ -271,27 +302,33 @@ function renderReports() {
       const key = `${a.title}|${a.company}`;
       counts[key] = (counts[key] || 0) + 1;
     });
-    perJob.innerHTML = Object.entries(counts).map(([k, v]) => {
-      const [title, company] = k.split("|");
-      return `<tr>
+    perJob.innerHTML = Object.entries(counts)
+      .map(([k, v]) => {
+        const [title, company] = k.split("|");
+        return `<tr>
         <td>${title}</td>
         <td>${company}</td>
         <td><span class="badge bg-primary">${v}</span></td>
       </tr>`;
-    }).join("");
+      })
+      .join("");
   }
 
   // Monthly report
   const monthly = document.getElementById("report-monthly");
   if (monthly) {
-    monthly.innerHTML = monthlyReport.map((m) => `
+    monthly.innerHTML = monthlyReport
+      .map(
+        (m) => `
       <tr>
         <td>${m.month}</td>
         <td>${m.apps}</td>
         <td><span class="badge badge-approved">${m.approved}</span></td>
         <td><span class="badge badge-rejected">${m.rejected}</span></td>
       </tr>
-    `).join("");
+    `,
+      )
+      .join("");
   }
 }
 
@@ -300,21 +337,34 @@ function openApplyModal(idx) {
   currentJobIdx = idx;
   const job = jobs[idx];
   document.getElementById("apply-job-title").textContent = job.title;
-  document.getElementById("apply-company").textContent   = job.company;
+  document.getElementById("apply-company").textContent = job.company;
   openModal("modal-apply");
 }
 
 function submitApplication() {
-  const modal = bootstrap.Modal.getInstance(document.getElementById("modal-apply"));
+  const modal = bootstrap.Modal.getInstance(
+    document.getElementById("modal-apply"),
+  );
   if (modal) modal.hide();
 
   if (currentJobIdx >= 0) {
-    const job   = jobs[currentJobIdx];
+    const job = jobs[currentJobIdx];
     const today = new Date().toISOString().split("T")[0];
 
     // Add to both lists (prototype simulation)
-    myApplications.push({ title: job.title, company: job.company, date: today, status: "Pending" });
-    adminApplications.push({ name: "Juan Dela Cruz", title: job.title, company: job.company, date: today, status: "Pending" });
+    myApplications.push({
+      title: job.title,
+      company: job.company,
+      date: today,
+      status: "Pending",
+    });
+    adminApplications.push({
+      name: "Juan Dela Cruz",
+      title: job.title,
+      company: job.company,
+      date: today,
+      status: "Pending",
+    });
 
     renderMyApps();
     renderAdminApps();
@@ -329,29 +379,35 @@ function submitApplication() {
 
 /* ── 7. Registration ──────────────────────────────────── */
 function doRegister() {
-  const modal = bootstrap.Modal.getInstance(document.getElementById("modal-register"));
+  const modal = bootstrap.Modal.getInstance(
+    document.getElementById("modal-register"),
+  );
   if (modal) modal.hide();
   showToast("Account registered (Prototype Only)!", "success");
 }
 
 /* ── 8. Profile ───────────────────────────────────────── */
 function toggleProfileEdit(show) {
-  document.getElementById("profile-view").style.display = show ? "none"  : "block";
-  document.getElementById("profile-edit").style.display = show ? "block" : "none";
+  document.getElementById("profile-view").style.display = show
+    ? "none"
+    : "block";
+  document.getElementById("profile-edit").style.display = show
+    ? "block"
+    : "none";
 }
 
 function saveProfile() {
-  const name    = document.getElementById("pe-name").value;
-  const email   = document.getElementById("pe-email").value;
+  const name = document.getElementById("pe-name").value;
+  const email = document.getElementById("pe-email").value;
   const contact = document.getElementById("pe-contact").value;
 
   // Update view fields
-  document.getElementById("pv-name").textContent    = name;
-  document.getElementById("pv-email").textContent   = email;
+  document.getElementById("pv-name").textContent = name;
+  document.getElementById("pv-email").textContent = email;
   document.getElementById("pv-contact").textContent = contact;
 
   // Update sidebar header info
-  document.getElementById("profile-name").textContent  = name;
+  document.getElementById("profile-name").textContent = name;
   document.getElementById("profile-email").textContent = email;
 
   toggleProfileEdit(false);
@@ -361,26 +417,29 @@ function saveProfile() {
 /* ── 9. Admin – Manage Jobs ───────────────────────────── */
 function editJob(idx) {
   const j = jobs[idx];
-  document.getElementById("job-modal-title").innerHTML = '<i class="bi bi-pencil me-2"></i>Edit Job';
-  document.getElementById("edit-job-idx").value  = idx;
-  document.getElementById("jf-title").value      = j.title;
-  document.getElementById("jf-company").value    = j.company;
-  document.getElementById("jf-desc").value       = j.desc;
-  document.getElementById("jf-qual").value       = j.qual;
-  document.getElementById("jf-status").value     = j.status;
-  document.getElementById("jf-date").value       = j.date;
+  document.getElementById("job-modal-title").innerHTML =
+    '<i class="bi bi-pencil me-2"></i>Edit Job';
+  document.getElementById("edit-job-idx").value = idx;
+  document.getElementById("jf-title").value = j.title;
+  document.getElementById("jf-company").value = j.company;
+  document.getElementById("jf-desc").value = j.desc;
+  document.getElementById("jf-qual").value = j.qual;
+  document.getElementById("jf-status").value = j.status;
+  document.getElementById("jf-date").value = j.date;
   openModal("modal-add-job");
 }
 
 function saveJob() {
-  const idx    = parseInt(document.getElementById("edit-job-idx").value);
+  const idx = parseInt(document.getElementById("edit-job-idx").value);
   const newJob = {
-    title:   document.getElementById("jf-title").value   || "Untitled Job",
+    title: document.getElementById("jf-title").value || "Untitled Job",
     company: document.getElementById("jf-company").value || "N/A",
-    desc:    document.getElementById("jf-desc").value,
-    qual:    document.getElementById("jf-qual").value,
-    status:  document.getElementById("jf-status").value,
-    date:    document.getElementById("jf-date").value || new Date().toISOString().split("T")[0],
+    desc: document.getElementById("jf-desc").value,
+    qual: document.getElementById("jf-qual").value,
+    status: document.getElementById("jf-status").value,
+    date:
+      document.getElementById("jf-date").value ||
+      new Date().toISOString().split("T")[0],
   };
 
   if (idx === -1) {
@@ -390,19 +449,25 @@ function saveJob() {
   }
 
   // Close modal and reset form
-  const modal = bootstrap.Modal.getInstance(document.getElementById("modal-add-job"));
+  const modal = bootstrap.Modal.getInstance(
+    document.getElementById("modal-add-job"),
+  );
   if (modal) modal.hide();
 
   document.getElementById("edit-job-idx").value = -1;
-  document.getElementById("job-modal-title").innerHTML = '<i class="bi bi-briefcase me-2"></i>Add New Job';
+  document.getElementById("job-modal-title").innerHTML =
+    '<i class="bi bi-briefcase me-2"></i>Add New Job';
   ["jf-title", "jf-company", "jf-desc", "jf-qual"].forEach(
-    (id) => (document.getElementById(id).value = "")
+    (id) => (document.getElementById(id).value = ""),
   );
 
   // Refresh both tables
   renderAdminJobs();
   renderJobCards(jobs);
-  showToast(idx === -1 ? "Job added successfully!" : "Job updated successfully!", "success");
+  showToast(
+    idx === -1 ? "Job added successfully!" : "Job updated successfully!",
+    "success",
+  );
 }
 
 function deleteJob(idx) {
@@ -417,7 +482,9 @@ function confirmDeleteJob() {
     renderAdminJobs();
     renderJobCards(jobs);
   }
-  const modal = bootstrap.Modal.getInstance(document.getElementById("modal-del-job"));
+  const modal = bootstrap.Modal.getInstance(
+    document.getElementById("modal-del-job"),
+  );
   if (modal) modal.hide();
   showToast("Job deleted (Prototype Only)", "danger");
 }
@@ -427,7 +494,7 @@ function updateAppStatus(idx, newStatus) {
   adminApplications[idx].status = newStatus;
 
   // Mirror status change to My Applications if same job title
-  const app   = adminApplications[idx];
+  const app = adminApplications[idx];
   const myApp = myApplications.find((a) => a.title === app.title);
   if (myApp) myApp.status = newStatus;
 
@@ -435,7 +502,7 @@ function updateAppStatus(idx, newStatus) {
   renderMyApps();
   showToast(
     `Application ${newStatus} (Prototype Only)`,
-    newStatus === "Approved" ? "success" : "danger"
+    newStatus === "Approved" ? "success" : "danger",
   );
 }
 
@@ -498,19 +565,23 @@ function openModal(id) {
 function statusBadge(status) {
   if (status === "Approved") return "badge-approved";
   if (status === "Rejected") return "badge-rejected";
-  if (status === "Pending")  return "badge-pending";
+  if (status === "Pending") return "badge-pending";
   return "bg-secondary";
 }
 
 /** Display a transient toast notification */
 function showToast(msg, type = "success") {
-  const iconMap = { success: "check-circle", danger: "x-circle", warning: "exclamation-circle" };
-  const icon    = iconMap[type] || "info-circle";
+  const iconMap = {
+    success: "check-circle",
+    danger: "x-circle",
+    warning: "exclamation-circle",
+  };
+  const icon = iconMap[type] || "info-circle";
 
   const container = document.getElementById("toast-container");
-  const div       = document.createElement("div");
-  div.className   = `toast-msg ${type}`;
-  div.innerHTML   = `<i class="bi bi-${icon} me-2"></i>${msg}`;
+  const div = document.createElement("div");
+  div.className = `toast-msg ${type}`;
+  div.innerHTML = `<i class="bi bi-${icon} me-2"></i>${msg}`;
   container.appendChild(div);
 
   setTimeout(() => div.remove(), 3500);
@@ -523,14 +594,18 @@ document.addEventListener("DOMContentLoaded", () => {
   if (jfDate) jfDate.value = new Date().toISOString().split("T")[0];
 
   // Reset Add Job form fields when the modal opens for a new entry
-  document.getElementById("modal-add-job").addEventListener("show.bs.modal", () => {
-    const idx = parseInt(document.getElementById("edit-job-idx").value);
-    if (idx === -1) {
-      ["jf-title", "jf-company", "jf-desc", "jf-qual"].forEach(
-        (id) => (document.getElementById(id).value = "")
-      );
-      document.getElementById("jf-status").value = "Open";
-      document.getElementById("jf-date").value   = new Date().toISOString().split("T")[0];
-    }
-  });
+  document
+    .getElementById("modal-add-job")
+    .addEventListener("show.bs.modal", () => {
+      const idx = parseInt(document.getElementById("edit-job-idx").value);
+      if (idx === -1) {
+        ["jf-title", "jf-company", "jf-desc", "jf-qual"].forEach(
+          (id) => (document.getElementById(id).value = ""),
+        );
+        document.getElementById("jf-status").value = "Open";
+        document.getElementById("jf-date").value = new Date()
+          .toISOString()
+          .split("T")[0];
+      }
+    });
 });

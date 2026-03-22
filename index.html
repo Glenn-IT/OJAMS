@@ -6,14 +6,19 @@
     <title>OJAMS – Online Job Application Monitoring System</title>
 
     <!-- ── CDN: Bootstrap 5 CSS ── -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <!-- ── CDN: Bootstrap Icons ── -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
     <!-- ── Custom Styles ── -->
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
   <body>
-
     <!-- ================================================
          TOAST CONTAINER
     ================================================ -->
@@ -25,14 +30,22 @@
     <div id="role-bar">
       <div class="brand">
         OJ<span>AMS</span>
-        <small style="font-weight:300;font-size:.7rem;color:#adb5bd;">
+        <small style="font-weight: 300; font-size: 0.7rem; color: #adb5bd">
           Online Job Application Monitoring System
         </small>
       </div>
       <div class="d-flex align-items-center gap-2">
-        <span style="color:#adb5bd;font-size:.75rem;">View as:</span>
-        <button class="role-btn active" id="btn-role-user"  onclick="setRole('user')">👤 User</button>
-        <button class="role-btn"        id="btn-role-admin" onclick="setRole('admin')">🛠 Admin</button>
+        <span style="color: #adb5bd; font-size: 0.75rem">View as:</span>
+        <button
+          class="role-btn active"
+          id="btn-role-user"
+          onclick="setRole('user')"
+        >
+          👤 User
+        </button>
+        <button class="role-btn" id="btn-role-admin" onclick="setRole('admin')">
+          🛠 Admin
+        </button>
       </div>
     </div>
 
@@ -43,11 +56,13 @@
       <div class="login-card card shadow-lg border-0">
         <div class="card-body p-4">
           <div class="text-center mb-3">
-            <div style="font-size:2.5rem;color:var(--primary);">
+            <div style="font-size: 2.5rem; color: var(--primary)">
               <i class="bi bi-briefcase-fill"></i>
             </div>
             <h5 class="fw-bold mt-1 mb-0">OJAMS</h5>
-            <small class="text-muted">Online Job Application Monitoring System</small>
+            <small class="text-muted"
+              >Online Job Application Monitoring System</small
+            >
           </div>
 
           <div id="login-role-badge" class="text-center mb-3">
@@ -56,15 +71,29 @@
 
           <div class="mb-3">
             <label class="form-label fw-semibold">Username</label>
-            <input type="text" id="inp-username" class="form-control form-control-sm"
-                   placeholder="Enter username" value="user1" />
+            <input
+              type="text"
+              id="inp-username"
+              class="form-control form-control-sm"
+              placeholder="Enter username"
+              value="user1"
+            />
           </div>
           <div class="mb-3">
             <label class="form-label fw-semibold">Password</label>
             <div class="input-group input-group-sm">
-              <input type="password" id="inp-password" class="form-control"
-                     placeholder="Enter password" value="password" />
-              <button class="btn btn-outline-secondary" type="button" onclick="togglePassVis()">
+              <input
+                type="password"
+                id="inp-password"
+                class="form-control"
+                placeholder="Enter password"
+                value="password"
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                onclick="togglePassVis()"
+              >
                 <i class="bi bi-eye" id="eye-icon"></i>
               </button>
             </div>
@@ -76,25 +105,28 @@
             </button>
           </div>
           <div class="text-center">
-            <a href="#" class="small text-primary" onclick="openModal('modal-register')">
+            <a
+              href="#"
+              class="small text-primary"
+              onclick="openModal('modal-register')"
+            >
               Register New Account
             </a>
           </div>
         </div>
       </div>
-    </div><!-- /login-page -->
+    </div>
+    <!-- /login-page -->
 
     <!-- ================================================
          APP LAYOUT (hidden until login)
     ================================================ -->
-    <div id="app-layout" style="display:none;">
-
+    <div id="app-layout" style="display: none">
       <!-- SIDEBAR (populated by buildSidebar()) -->
       <nav id="sidebar"></nav>
 
       <!-- MAIN CONTENT -->
       <div id="main-content">
-
         <!-- ============================================
              USER SECTIONS
         ============================================ -->
@@ -103,8 +135,11 @@
         <div class="page-section" id="sec-browse">
           <div class="page-header">
             <h5><i class="bi bi-search me-2 text-primary"></i>Browse Jobs</h5>
-            <input class="form-control form-control-sm w-auto"
-                   placeholder="Search jobs…" oninput="filterJobs(this.value)" />
+            <input
+              class="form-control form-control-sm w-auto"
+              placeholder="Search jobs…"
+              oninput="filterJobs(this.value)"
+            />
           </div>
           <div id="job-list" class="row g-3"></div>
         </div>
@@ -112,15 +147,21 @@
         <!-- D. My Applications -->
         <div class="page-section" id="sec-myapps">
           <div class="page-header">
-            <h5><i class="bi bi-file-earmark-text me-2 text-primary"></i>My Applications</h5>
+            <h5>
+              <i class="bi bi-file-earmark-text me-2 text-primary"></i>My
+              Applications
+            </h5>
           </div>
           <div class="card border-0 shadow-sm">
             <div class="card-body p-0">
               <table class="table table-hover mb-0">
                 <thead class="table-light">
                   <tr>
-                    <th>#</th><th>Job Title</th><th>Company</th>
-                    <th>Date Applied</th><th>Status</th>
+                    <th>#</th>
+                    <th>Job Title</th>
+                    <th>Company</th>
+                    <th>Date Applied</th>
+                    <th>Status</th>
                   </tr>
                 </thead>
                 <tbody id="my-apps-tbody"></tbody>
@@ -132,14 +173,21 @@
         <!-- E. Profile Settings -->
         <div class="page-section" id="sec-profile">
           <div class="page-header">
-            <h5><i class="bi bi-person-circle me-2 text-primary"></i>Profile Settings</h5>
+            <h5>
+              <i class="bi bi-person-circle me-2 text-primary"></i>Profile
+              Settings
+            </h5>
           </div>
-          <div class="card border-0 shadow-sm p-4" style="max-width:600px;">
+          <div class="card border-0 shadow-sm p-4" style="max-width: 600px">
             <div class="d-flex align-items-center gap-3 mb-4">
-              <div class="profile-avatar"><i class="bi bi-person-fill"></i></div>
+              <div class="profile-avatar">
+                <i class="bi bi-person-fill"></i>
+              </div>
               <div>
                 <div class="fw-bold fs-6" id="profile-name">Juan Dela Cruz</div>
-                <div class="text-muted small" id="profile-email">juan@email.com</div>
+                <div class="text-muted small" id="profile-email">
+                  juan@email.com
+                </div>
               </div>
             </div>
 
@@ -162,46 +210,79 @@
                 <span class="info-val">••••••••</span>
               </div>
               <div class="mt-3">
-                <button class="btn btn-primary btn-sm" onclick="toggleProfileEdit(true)">
+                <button
+                  class="btn btn-primary btn-sm"
+                  onclick="toggleProfileEdit(true)"
+                >
                   <i class="bi bi-pencil me-1"></i>Edit Profile
                 </button>
               </div>
             </div>
 
             <!-- Edit Mode -->
-            <div id="profile-edit" style="display:none;">
+            <div id="profile-edit" style="display: none">
               <div class="mb-2">
                 <label class="form-label fw-semibold small">Full Name</label>
-                <input type="text" class="form-control form-control-sm" id="pe-name" value="Juan Dela Cruz" />
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  id="pe-name"
+                  value="Juan Dela Cruz"
+                />
               </div>
               <div class="mb-2">
                 <label class="form-label fw-semibold small">Email</label>
-                <input type="email" class="form-control form-control-sm" id="pe-email" value="juan@email.com" />
+                <input
+                  type="email"
+                  class="form-control form-control-sm"
+                  id="pe-email"
+                  value="juan@email.com"
+                />
               </div>
               <div class="mb-2">
-                <label class="form-label fw-semibold small">Contact Number</label>
-                <input type="text" class="form-control form-control-sm" id="pe-contact" value="09123456789" />
+                <label class="form-label fw-semibold small"
+                  >Contact Number</label
+                >
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  id="pe-contact"
+                  value="09123456789"
+                />
               </div>
               <div class="mb-2">
                 <label class="form-label fw-semibold small">New Password</label>
-                <input type="password" class="form-control form-control-sm"
-                       placeholder="Leave blank to keep current" />
+                <input
+                  type="password"
+                  class="form-control form-control-sm"
+                  placeholder="Leave blank to keep current"
+                />
               </div>
               <div class="mb-3">
-                <label class="form-label fw-semibold small">Profile Photo</label>
-                <input type="file" class="form-control form-control-sm" accept="image/*" />
+                <label class="form-label fw-semibold small"
+                  >Profile Photo</label
+                >
+                <input
+                  type="file"
+                  class="form-control form-control-sm"
+                  accept="image/*"
+                />
               </div>
               <div class="d-flex gap-2">
                 <button class="btn btn-success btn-sm" onclick="saveProfile()">
                   <i class="bi bi-check-lg me-1"></i>Save
                 </button>
-                <button class="btn btn-outline-secondary btn-sm" onclick="toggleProfileEdit(false)">
+                <button
+                  class="btn btn-outline-secondary btn-sm"
+                  onclick="toggleProfileEdit(false)"
+                >
                   Cancel
                 </button>
               </div>
             </div>
           </div>
-        </div><!-- /sec-profile -->
+        </div>
+        <!-- /sec-profile -->
 
         <!-- ============================================
              ADMIN SECTIONS
@@ -210,57 +291,100 @@
         <!-- A. Dashboard -->
         <div class="page-section" id="sec-dashboard">
           <div class="page-header">
-            <h5><i class="bi bi-speedometer2 me-2 text-primary"></i>Dashboard</h5>
+            <h5>
+              <i class="bi bi-speedometer2 me-2 text-primary"></i>Dashboard
+            </h5>
             <span class="text-muted small">Welcome back, Admin!</span>
           </div>
 
           <!-- Stat Cards -->
           <div class="row g-3 mb-4" id="stat-cards">
             <div class="col-6 col-md-3">
-              <div class="stat-card" style="background:linear-gradient(135deg,#0d6efd,#0a58ca);">
-                <div class="stat-icon"><i class="bi bi-briefcase-fill"></i></div>
-                <div><div class="stat-val">12</div><div class="stat-label">Total Job Posts</div></div>
+              <div
+                class="stat-card"
+                style="background: linear-gradient(135deg, #0d6efd, #0a58ca)"
+              >
+                <div class="stat-icon">
+                  <i class="bi bi-briefcase-fill"></i>
+                </div>
+                <div>
+                  <div class="stat-val">12</div>
+                  <div class="stat-label">Total Job Posts</div>
+                </div>
               </div>
             </div>
             <div class="col-6 col-md-3">
-              <div class="stat-card" style="background:linear-gradient(135deg,#198754,#146c43);">
+              <div
+                class="stat-card"
+                style="background: linear-gradient(135deg, #198754, #146c43)"
+              >
                 <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
-                <div><div class="stat-val">48</div><div class="stat-label">Total Applicants</div></div>
+                <div>
+                  <div class="stat-val">48</div>
+                  <div class="stat-label">Total Applicants</div>
+                </div>
               </div>
             </div>
             <div class="col-6 col-md-3">
-              <div class="stat-card" style="background:linear-gradient(135deg,#ffc107,#cc9a06);">
-                <div class="stat-icon"><i class="bi bi-hourglass-split"></i></div>
-                <div><div class="stat-val">21</div><div class="stat-label">Pending</div></div>
+              <div
+                class="stat-card"
+                style="background: linear-gradient(135deg, #ffc107, #cc9a06)"
+              >
+                <div class="stat-icon">
+                  <i class="bi bi-hourglass-split"></i>
+                </div>
+                <div>
+                  <div class="stat-val">21</div>
+                  <div class="stat-label">Pending</div>
+                </div>
               </div>
             </div>
             <div class="col-6 col-md-3">
-              <div class="stat-card" style="background:linear-gradient(135deg,#0dcaf0,#0aa2c0);">
+              <div
+                class="stat-card"
+                style="background: linear-gradient(135deg, #0dcaf0, #0aa2c0)"
+              >
                 <div class="stat-icon"><i class="bi bi-check2-circle"></i></div>
-                <div><div class="stat-val">19</div><div class="stat-label">Approved</div></div>
+                <div>
+                  <div class="stat-val">19</div>
+                  <div class="stat-label">Approved</div>
+                </div>
               </div>
             </div>
           </div>
 
           <!-- Activity Table -->
           <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white fw-semibold py-2">Recent Activity</div>
+            <div class="card-header bg-white fw-semibold py-2">
+              Recent Activity
+            </div>
             <div class="card-body p-0">
               <table class="table table-sm table-hover mb-0">
                 <thead class="table-light">
-                  <tr><th>Date</th><th>Time</th><th>Activity</th><th>Status</th></tr>
+                  <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Activity</th>
+                    <th>Status</th>
+                  </tr>
                 </thead>
                 <tbody id="activity-tbody"></tbody>
               </table>
             </div>
           </div>
-        </div><!-- /sec-dashboard -->
+        </div>
+        <!-- /sec-dashboard -->
 
         <!-- B. Manage Jobs -->
         <div class="page-section" id="sec-manage-jobs">
           <div class="page-header">
-            <h5><i class="bi bi-briefcase me-2 text-primary"></i>Manage Jobs</h5>
-            <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-job')">
+            <h5>
+              <i class="bi bi-briefcase me-2 text-primary"></i>Manage Jobs
+            </h5>
+            <button
+              class="btn btn-primary btn-sm"
+              onclick="openModal('modal-add-job')"
+            >
               <i class="bi bi-plus-lg me-1"></i>Add New Job
             </button>
           </div>
@@ -269,8 +393,12 @@
               <table class="table table-hover mb-0">
                 <thead class="table-light">
                   <tr>
-                    <th>#</th><th>Job Title</th><th>Company</th>
-                    <th>Date Posted</th><th>Status</th><th>Actions</th>
+                    <th>#</th>
+                    <th>Job Title</th>
+                    <th>Company</th>
+                    <th>Date Posted</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody id="admin-jobs-tbody"></tbody>
@@ -282,15 +410,21 @@
         <!-- C. Applications -->
         <div class="page-section" id="sec-applications">
           <div class="page-header">
-            <h5><i class="bi bi-folder2-open me-2 text-primary"></i>Applications</h5>
+            <h5>
+              <i class="bi bi-folder2-open me-2 text-primary"></i>Applications
+            </h5>
           </div>
           <div class="card border-0 shadow-sm">
             <div class="card-body p-0">
               <table class="table table-hover mb-0">
                 <thead class="table-light">
                   <tr>
-                    <th>#</th><th>Applicant</th><th>Job Title</th>
-                    <th>Date Applied</th><th>Status</th><th>Actions</th>
+                    <th>#</th>
+                    <th>Applicant</th>
+                    <th>Job Title</th>
+                    <th>Date Applied</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody id="admin-apps-tbody"></tbody>
@@ -302,9 +436,16 @@
         <!-- D. Reports & Monitoring -->
         <div class="page-section" id="sec-reports">
           <div class="page-header">
-            <h5><i class="bi bi-bar-chart-line me-2 text-primary"></i>Reports &amp; Monitoring</h5>
-            <button class="btn btn-success btn-sm"
-                    onclick="showToast('Download started (Prototype Only)', 'success')">
+            <h5>
+              <i class="bi bi-bar-chart-line me-2 text-primary"></i>Reports
+              &amp; Monitoring
+            </h5>
+            <button
+              class="btn btn-success btn-sm"
+              onclick="
+                showToast('Download started (Prototype Only)', 'success')
+              "
+            >
               <i class="bi bi-download me-1"></i>Download Report
             </button>
           </div>
@@ -312,11 +453,17 @@
             <!-- Applicants per Job -->
             <div class="col-md-6">
               <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white fw-semibold py-2">Applicants per Job</div>
+                <div class="card-header bg-white fw-semibold py-2">
+                  Applicants per Job
+                </div>
                 <div class="card-body p-0">
                   <table class="table table-sm mb-0">
                     <thead class="table-light">
-                      <tr><th>Job Title</th><th>Company</th><th>Applicants</th></tr>
+                      <tr>
+                        <th>Job Title</th>
+                        <th>Company</th>
+                        <th>Applicants</th>
+                      </tr>
                     </thead>
                     <tbody id="report-per-job"></tbody>
                   </table>
@@ -326,14 +473,22 @@
             <!-- Monthly Report -->
             <div class="col-md-6">
               <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white fw-semibold py-2">Monthly Application Report</div>
+                <div class="card-header bg-white fw-semibold py-2">
+                  Monthly Application Report
+                </div>
                 <div class="card-body">
                   <div class="chart-placeholder">
-                    <i class="bi bi-bar-chart-fill me-2"></i>Chart Placeholder (Backend Required)
+                    <i class="bi bi-bar-chart-fill me-2"></i>Chart Placeholder
+                    (Backend Required)
                   </div>
                   <table class="table table-sm mt-3 mb-0">
                     <thead class="table-light">
-                      <tr><th>Month</th><th>Applications</th><th>Approved</th><th>Rejected</th></tr>
+                      <tr>
+                        <th>Month</th>
+                        <th>Applications</th>
+                        <th>Approved</th>
+                        <th>Rejected</th>
+                      </tr>
                     </thead>
                     <tbody id="report-monthly"></tbody>
                   </table>
@@ -341,10 +496,12 @@
               </div>
             </div>
           </div>
-        </div><!-- /sec-reports -->
-
-      </div><!-- /main-content -->
-    </div><!-- /app-layout -->
+        </div>
+        <!-- /sec-reports -->
+      </div>
+      <!-- /main-content -->
+    </div>
+    <!-- /app-layout -->
 
     <!-- ================================================
          MODALS
@@ -358,38 +515,72 @@
             <h6 class="modal-title fw-bold">
               <i class="bi bi-person-plus me-2"></i>Register New Account
             </h6>
-            <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal"></button>
+            <button
+              type="button"
+              class="btn-close btn-sm"
+              data-bs-dismiss="modal"
+            ></button>
           </div>
           <div class="modal-body modal-body-scroll">
             <div class="row g-2">
               <div class="col-md-6">
                 <label class="form-label fw-semibold small">Full Name</label>
-                <input type="text" class="form-control form-control-sm" placeholder="e.g. Juan Dela Cruz" />
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  placeholder="e.g. Juan Dela Cruz"
+                />
               </div>
               <div class="col-md-6">
                 <label class="form-label fw-semibold small">Email</label>
-                <input type="email" class="form-control form-control-sm" placeholder="email@example.com" />
+                <input
+                  type="email"
+                  class="form-control form-control-sm"
+                  placeholder="email@example.com"
+                />
               </div>
               <div class="col-md-6">
                 <label class="form-label fw-semibold small">Username</label>
-                <input type="text" class="form-control form-control-sm" placeholder="Choose a username" />
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  placeholder="Choose a username"
+                />
               </div>
               <div class="col-md-6">
-                <label class="form-label fw-semibold small">Contact Number</label>
-                <input type="text" class="form-control form-control-sm" placeholder="09XXXXXXXXX" />
+                <label class="form-label fw-semibold small"
+                  >Contact Number</label
+                >
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  placeholder="09XXXXXXXXX"
+                />
               </div>
               <div class="col-md-6">
                 <label class="form-label fw-semibold small">Password</label>
-                <input type="password" class="form-control form-control-sm" placeholder="Create password" />
+                <input
+                  type="password"
+                  class="form-control form-control-sm"
+                  placeholder="Create password"
+                />
               </div>
               <div class="col-md-6">
-                <label class="form-label fw-semibold small">Confirm Password</label>
-                <input type="password" class="form-control form-control-sm" placeholder="Repeat password" />
+                <label class="form-label fw-semibold small"
+                  >Confirm Password</label
+                >
+                <input
+                  type="password"
+                  class="form-control form-control-sm"
+                  placeholder="Repeat password"
+                />
               </div>
             </div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+            <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+              Cancel
+            </button>
             <button class="btn btn-primary btn-sm" onclick="doRegister()">
               <i class="bi bi-person-check me-1"></i>Register
             </button>
@@ -406,7 +597,11 @@
             <h6 class="modal-title fw-bold">
               <i class="bi bi-file-earmark-person me-2"></i>Job Application Form
             </h6>
-            <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal"></button>
+            <button
+              type="button"
+              class="btn-close btn-sm"
+              data-bs-dismiss="modal"
+            ></button>
           </div>
           <div class="modal-body modal-body-scroll">
             <div class="mb-2 p-2 bg-light rounded">
@@ -418,31 +613,64 @@
 
             <!-- Personal Information -->
             <div class="card border-0 bg-light mb-3">
-              <div class="card-header fw-semibold small bg-primary text-white py-1">
+              <div
+                class="card-header fw-semibold small bg-primary text-white py-1"
+              >
                 Personal Information
               </div>
               <div class="card-body pb-2">
                 <table class="table table-sm mb-0">
                   <tbody>
                     <tr>
-                      <td class="fw-semibold small" style="width:35%;">Full Name</td>
-                      <td><input type="text" class="form-control form-control-sm" placeholder="Last, First, Middle" /></td>
+                      <td class="fw-semibold small" style="width: 35%">
+                        Full Name
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          placeholder="Last, First, Middle"
+                        />
+                      </td>
                     </tr>
                     <tr>
                       <td class="fw-semibold small">Birthdate</td>
-                      <td><input type="date" class="form-control form-control-sm" /></td>
+                      <td>
+                        <input
+                          type="date"
+                          class="form-control form-control-sm"
+                        />
+                      </td>
                     </tr>
                     <tr>
                       <td class="fw-semibold small">Age</td>
-                      <td><input type="number" class="form-control form-control-sm" placeholder="Age" /></td>
+                      <td>
+                        <input
+                          type="number"
+                          class="form-control form-control-sm"
+                          placeholder="Age"
+                        />
+                      </td>
                     </tr>
                     <tr>
                       <td class="fw-semibold small">Address</td>
-                      <td><input type="text" class="form-control form-control-sm" placeholder="Complete Address" /></td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          placeholder="Complete Address"
+                        />
+                      </td>
                     </tr>
                     <tr>
                       <td class="fw-semibold small">Contact Number</td>
-                      <td><input type="text" class="form-control form-control-sm" placeholder="09XXXXXXXXX" /></td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          placeholder="09XXXXXXXXX"
+                        />
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -451,34 +679,88 @@
 
             <!-- Educational Attainment -->
             <div class="card border-0 bg-light mb-3">
-              <div class="card-header fw-semibold small bg-success text-white py-1">
+              <div
+                class="card-header fw-semibold small bg-success text-white py-1"
+              >
                 Educational Attainment
               </div>
               <div class="card-body pb-2">
                 <table class="table table-sm mb-0">
                   <thead class="table-light">
-                    <tr><th>Level</th><th>School Name</th><th>Year Graduated</th></tr>
+                    <tr>
+                      <th>Level</th>
+                      <th>School Name</th>
+                      <th>Year Graduated</th>
+                    </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <td class="fw-semibold small">Elementary</td>
-                      <td><input type="text" class="form-control form-control-sm" placeholder="School name" /></td>
-                      <td><input type="text" class="form-control form-control-sm" placeholder="Year" /></td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          placeholder="School name"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          placeholder="Year"
+                        />
+                      </td>
                     </tr>
                     <tr>
                       <td class="fw-semibold small">Junior High School</td>
-                      <td><input type="text" class="form-control form-control-sm" placeholder="School name" /></td>
-                      <td><input type="text" class="form-control form-control-sm" placeholder="Year" /></td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          placeholder="School name"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          placeholder="Year"
+                        />
+                      </td>
                     </tr>
                     <tr>
                       <td class="fw-semibold small">Senior High School</td>
-                      <td><input type="text" class="form-control form-control-sm" placeholder="School name" /></td>
-                      <td><input type="text" class="form-control form-control-sm" placeholder="Year" /></td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          placeholder="School name"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          placeholder="Year"
+                        />
+                      </td>
                     </tr>
                     <tr>
                       <td class="fw-semibold small">College</td>
-                      <td><input type="text" class="form-control form-control-sm" placeholder="School name" /></td>
-                      <td><input type="text" class="form-control form-control-sm" placeholder="Year" /></td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          placeholder="School name"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          placeholder="Year"
+                        />
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -489,25 +771,45 @@
             <div class="row g-2 mb-3">
               <div class="col-md-6">
                 <label class="form-label fw-semibold small">Skills</label>
-                <textarea class="form-control form-control-sm" rows="3" placeholder="List your skills…"></textarea>
+                <textarea
+                  class="form-control form-control-sm"
+                  rows="3"
+                  placeholder="List your skills…"
+                ></textarea>
               </div>
               <div class="col-md-6">
-                <label class="form-label fw-semibold small">Work Experience</label>
-                <textarea class="form-control form-control-sm" rows="3" placeholder="Previous work experience…"></textarea>
+                <label class="form-label fw-semibold small"
+                  >Work Experience</label
+                >
+                <textarea
+                  class="form-control form-control-sm"
+                  rows="3"
+                  placeholder="Previous work experience…"
+                ></textarea>
               </div>
             </div>
 
             <!-- ID Upload -->
             <div class="mb-2">
               <label class="form-label fw-semibold small">
-                Upload Passport Size ID <span class="text-muted">(2x2 photo)</span>
+                Upload Passport Size ID
+                <span class="text-muted">(2x2 photo)</span>
               </label>
-              <input type="file" class="form-control form-control-sm" accept="image/*" />
+              <input
+                type="file"
+                class="form-control form-control-sm"
+                accept="image/*"
+              />
             </div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-            <button class="btn btn-primary btn-sm" onclick="submitApplication()">
+            <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+              Cancel
+            </button>
+            <button
+              class="btn btn-primary btn-sm"
+              onclick="submitApplication()"
+            >
               <i class="bi bi-send me-1"></i>Submit Application
             </button>
           </div>
@@ -523,30 +825,54 @@
             <h6 class="modal-title fw-bold" id="job-modal-title">
               <i class="bi bi-briefcase me-2"></i>Add New Job
             </h6>
-            <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal"></button>
+            <button
+              type="button"
+              class="btn-close btn-sm"
+              data-bs-dismiss="modal"
+            ></button>
           </div>
           <div class="modal-body">
             <input type="hidden" id="edit-job-idx" value="-1" />
             <div class="row g-2">
               <div class="col-md-6">
                 <label class="form-label fw-semibold small">Job Title</label>
-                <input type="text" class="form-control form-control-sm" id="jf-title"
-                       placeholder="e.g. Software Engineer" />
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  id="jf-title"
+                  placeholder="e.g. Software Engineer"
+                />
               </div>
               <div class="col-md-6">
                 <label class="form-label fw-semibold small">Company Name</label>
-                <input type="text" class="form-control form-control-sm" id="jf-company"
-                       placeholder="Company" />
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  id="jf-company"
+                  placeholder="Company"
+                />
               </div>
               <div class="col-12">
-                <label class="form-label fw-semibold small">Job Description</label>
-                <textarea class="form-control form-control-sm" id="jf-desc" rows="2"
-                          placeholder="Brief description…"></textarea>
+                <label class="form-label fw-semibold small"
+                  >Job Description</label
+                >
+                <textarea
+                  class="form-control form-control-sm"
+                  id="jf-desc"
+                  rows="2"
+                  placeholder="Brief description…"
+                ></textarea>
               </div>
               <div class="col-12">
-                <label class="form-label fw-semibold small">Qualifications</label>
-                <textarea class="form-control form-control-sm" id="jf-qual" rows="2"
-                          placeholder="Required qualifications…"></textarea>
+                <label class="form-label fw-semibold small"
+                  >Qualifications</label
+                >
+                <textarea
+                  class="form-control form-control-sm"
+                  id="jf-qual"
+                  rows="2"
+                  placeholder="Required qualifications…"
+                ></textarea>
               </div>
               <div class="col-md-6">
                 <label class="form-label fw-semibold small">Status</label>
@@ -557,12 +883,18 @@
               </div>
               <div class="col-md-6">
                 <label class="form-label fw-semibold small">Date Posted</label>
-                <input type="date" class="form-control form-control-sm" id="jf-date" />
+                <input
+                  type="date"
+                  class="form-control form-control-sm"
+                  id="jf-date"
+                />
               </div>
             </div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+            <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+              Cancel
+            </button>
             <button class="btn btn-primary btn-sm" onclick="saveJob()">
               <i class="bi bi-save me-1"></i>Save Job
             </button>
@@ -579,11 +911,17 @@
             <h6 class="modal-title fw-bold">
               <i class="bi bi-person-lines-fill me-2"></i>Applicant Details
             </h6>
-            <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal"></button>
+            <button
+              type="button"
+              class="btn-close btn-sm"
+              data-bs-dismiss="modal"
+            ></button>
           </div>
           <div class="modal-body" id="view-app-body"></div>
           <div class="modal-footer">
-            <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+              Close
+            </button>
           </div>
         </div>
       </div>
@@ -594,14 +932,23 @@
       <div class="modal-dialog modal-sm modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-body text-center py-4">
-            <div style="font-size:2.5rem;color:#dc3545;">
+            <div style="font-size: 2.5rem; color: #dc3545">
               <i class="bi bi-box-arrow-left"></i>
             </div>
             <h6 class="fw-bold mt-2">Confirm Logout</h6>
-            <p class="text-muted small mb-3">Are you sure you want to logout?</p>
+            <p class="text-muted small mb-3">
+              Are you sure you want to logout?
+            </p>
             <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-danger btn-sm px-4" onclick="doLogout()">Yes, Logout</button>
-              <button class="btn btn-outline-secondary btn-sm px-4" data-bs-dismiss="modal">No</button>
+              <button class="btn btn-danger btn-sm px-4" onclick="doLogout()">
+                Yes, Logout
+              </button>
+              <button
+                class="btn btn-outline-secondary btn-sm px-4"
+                data-bs-dismiss="modal"
+              >
+                No
+              </button>
             </div>
           </div>
         </div>
@@ -613,14 +960,26 @@
       <div class="modal-dialog modal-sm modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-body text-center py-4">
-            <div style="font-size:2.5rem;color:#dc3545;">
+            <div style="font-size: 2.5rem; color: #dc3545">
               <i class="bi bi-trash3"></i>
             </div>
             <h6 class="fw-bold mt-2">Delete Job?</h6>
-            <p class="text-muted small mb-3">This action cannot be undone (Prototype Only).</p>
+            <p class="text-muted small mb-3">
+              This action cannot be undone (Prototype Only).
+            </p>
             <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-danger btn-sm px-4" onclick="confirmDeleteJob()">Delete</button>
-              <button class="btn btn-outline-secondary btn-sm px-4" data-bs-dismiss="modal">Cancel</button>
+              <button
+                class="btn btn-danger btn-sm px-4"
+                onclick="confirmDeleteJob()"
+              >
+                Delete
+              </button>
+              <button
+                class="btn btn-outline-secondary btn-sm px-4"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
             </div>
           </div>
         </div>
@@ -633,6 +992,5 @@
     <script src="assets/js/data.js"></script>
     <!-- ── Application Logic ── -->
     <script src="assets/js/app.js"></script>
-
   </body>
 </html>

@@ -153,23 +153,35 @@ const activityLog = [
 
 // ── Admin – Monthly Report ────────────────────────────────
 const monthlyReport = [
-  { month: "January 2026",  apps: 14, approved: 8,  rejected: 3 },
+  { month: "January 2026", apps: 14, approved: 8, rejected: 3 },
   { month: "February 2026", apps: 19, approved: 11, rejected: 5 },
-  { month: "March 2026",    apps: 15, approved: 8,  rejected: 4 },
+  { month: "March 2026", apps: 15, approved: 8, rejected: 4 },
 ];
 
 // ── Sidebar Menu Definitions ──────────────────────────────
 const userMenu = [
-  { icon: "bi-search",            label: "Browse Jobs",      section: "sec-browse"   },
-  { icon: "bi-file-earmark-text", label: "My Applications",  section: "sec-myapps"   },
-  { icon: "bi-person-circle",     label: "Profile Settings", section: "sec-profile"  },
-  { icon: "bi-box-arrow-left",    label: "Logout",           section: "logout"       },
+  { icon: "bi-search", label: "Browse Jobs", section: "sec-browse" },
+  {
+    icon: "bi-file-earmark-text",
+    label: "My Applications",
+    section: "sec-myapps",
+  },
+  {
+    icon: "bi-person-circle",
+    label: "Profile Settings",
+    section: "sec-profile",
+  },
+  { icon: "bi-box-arrow-left", label: "Logout", section: "logout" },
 ];
 
 const adminMenu = [
-  { icon: "bi-speedometer2",   label: "Dashboard",    section: "sec-dashboard"    },
-  { icon: "bi-briefcase",      label: "Manage Jobs",  section: "sec-manage-jobs"  },
-  { icon: "bi-folder2-open",   label: "Applications", section: "sec-applications" },
-  { icon: "bi-bar-chart-line", label: "Reports",      section: "sec-reports"      },
-  { icon: "bi-box-arrow-left", label: "Logout",       section: "logout"           },
+  { icon: "bi-speedometer2", label: "Dashboard", section: "sec-dashboard" },
+  { icon: "bi-briefcase", label: "Manage Jobs", section: "sec-manage-jobs" },
+  {
+    icon: "bi-folder2-open",
+    label: "Applications",
+    section: "sec-applications",
+  },
+  { icon: "bi-bar-chart-line", label: "Reports", section: "sec-reports" },
+  { icon: "bi-box-arrow-left", label: "Logout", section: "logout" },
 ];
