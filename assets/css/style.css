@@ -1,0 +1,321 @@
+/* ==========================================================
+   OJAMS – Custom Stylesheet
+   Organized Sections:
+   1. CSS Variables / Root
+   2. Global
+   3. Role Toggle Bar
+   4. Layout
+   5. Sidebar
+   6. Main Content / Page Sections
+   7. Login Page
+   8. Stat Cards
+   9. Job Cards
+   10. Tables
+   11. Status Badges
+   12. Toast Notifications
+   13. Page Header
+   14. Profile
+   15. Chart Placeholder
+   16. Modal Utilities
+   17. Body State Helpers
+========================================================== */
+
+/* ── 1. CSS Variables ─────────────────────────────────── */
+:root {
+  --sidebar-width: 220px;
+  --primary: #0d6efd;
+  --success: #198754;
+  --danger: #dc3545;
+  --warning: #ffc107;
+  --sidebar-bg: #1e2a3a;
+  --sidebar-text: #cdd3da;
+  --sidebar-hover: #2d3f55;
+  --sidebar-active: #0d6efd;
+}
+
+/* ── 2. Global ────────────────────────────────────────── */
+body {
+  font-size: 0.875rem;
+  background: #f0f2f5;
+}
+
+/* ── 3. Role Toggle Bar ───────────────────────────────── */
+#role-bar {
+  background: var(--sidebar-bg);
+  padding: 6px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 1050;
+}
+#role-bar .brand {
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+}
+#role-bar .brand span {
+  color: var(--primary);
+}
+.role-btn {
+  padding: 4px 16px;
+  border: 1.5px solid #fff;
+  border-radius: 20px;
+  background: transparent;
+  color: #fff;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.role-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+/* ── 4. Layout ────────────────────────────────────────── */
+#app-layout {
+  display: flex;
+  min-height: calc(100vh - 38px);
+}
+
+/* ── 5. Sidebar ───────────────────────────────────────── */
+#sidebar {
+  width: var(--sidebar-width);
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+  flex-shrink: 0;
+  min-height: 100%;
+}
+#sidebar .sidebar-section {
+  padding: 4px 12px;
+  font-size: 0.68rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #6c8096;
+  margin-top: 10px;
+}
+#sidebar .nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  color: var(--sidebar-text);
+  cursor: pointer;
+  border-radius: 6px;
+  margin: 2px 8px;
+  font-size: 0.83rem;
+  transition: background 0.15s;
+  text-decoration: none;
+}
+#sidebar .nav-item:hover {
+  background: var(--sidebar-hover);
+  color: #fff;
+}
+#sidebar .nav-item.active {
+  background: var(--sidebar-active);
+  color: #fff;
+}
+#sidebar .nav-item i {
+  font-size: 1rem;
+  width: 20px;
+  text-align: center;
+}
+
+/* ── 6. Main Content / Page Sections ─────────────────── */
+#main-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+.page-section {
+  display: none;
+}
+.page-section.active {
+  display: block;
+}
+
+/* ── 7. Login Page ────────────────────────────────────── */
+#login-page {
+  min-height: calc(100vh - 38px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1e2a3a 0%, #0d6efd22 100%);
+}
+.login-card {
+  width: 360px;
+}
+
+/* ── 8. Stat Cards ────────────────────────────────────── */
+.stat-card {
+  border-radius: 10px;
+  padding: 16px 18px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+.stat-card .stat-icon {
+  font-size: 2rem;
+  opacity: 0.85;
+}
+.stat-card .stat-val {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.stat-card .stat-label {
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
+
+/* ── 9. Job Cards ─────────────────────────────────────── */
+.job-card {
+  border-left: 4px solid var(--primary);
+  border-radius: 8px;
+}
+.job-card .badge-date {
+  font-size: 0.68rem;
+}
+
+/* ── 10. Tables ───────────────────────────────────────── */
+.table th {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6c757d;
+}
+
+/* ── 11. Status Badges ────────────────────────────────── */
+.badge-pending {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffc107;
+}
+.badge-approved {
+  background: #d1e7dd;
+  color: #0f5132;
+  border: 1px solid #198754;
+}
+.badge-rejected {
+  background: #f8d7da;
+  color: #842029;
+  border: 1px solid #dc3545;
+}
+
+/* ── 12. Toast Notifications ──────────────────────────── */
+#toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.toast-msg {
+  background: #1e2a3a;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 0.83rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  animation: fadeInUp 0.3s ease;
+  max-width: 280px;
+}
+.toast-msg.success {
+  border-left: 4px solid #198754;
+}
+.toast-msg.warning {
+  border-left: 4px solid #ffc107;
+}
+.toast-msg.danger {
+  border-left: 4px solid #dc3545;
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── 13. Page Header ──────────────────────────────────── */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 10px;
+}
+.page-header h5 {
+  margin: 0;
+  font-weight: 700;
+  color: #1e2a3a;
+}
+
+/* ── 14. Profile ──────────────────────────────────────── */
+.profile-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+.info-row {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+.info-row .info-label {
+  width: 150px;
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.8rem;
+}
+.info-row .info-val {
+  color: #212529;
+  font-size: 0.83rem;
+}
+
+/* ── 15. Chart Placeholder ────────────────────────────── */
+.chart-placeholder {
+  background: linear-gradient(135deg, #e9ecef, #dee2e6);
+  border-radius: 10px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6c757d;
+  font-size: 0.8rem;
+  border: 2px dashed #ced4da;
+}
+
+/* ── 16. Modal Utilities ──────────────────────────────── */
+.modal-body-scroll {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+/* ── 17. Body State Helpers ───────────────────────────── */
+body.logged-in #login-page {
+  display: none !important;
+}
+body.logged-in #app-layout {
+  display: flex !important;
+}
