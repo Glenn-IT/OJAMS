@@ -8,10 +8,10 @@
 
 OJAMS is a clickable prototype that simulates a complete Job Application Monitoring workflow with two roles:
 
-| Role | Access |
-|------|--------|
-| 👤 **User** | Browse Jobs, Apply, View My Applications, Edit Profile |
-| 🛠️ **Admin** | Dashboard, Manage Jobs, Review Applications, Reports |
+| Role         | Access                                                 |
+| ------------ | ------------------------------------------------------ |
+| 👤 **User**  | Browse Jobs, Apply, View My Applications, Edit Profile |
+| 🛠️ **Admin** | Dashboard, Manage Jobs, Review Applications, Reports   |
 
 ---
 
@@ -32,13 +32,13 @@ OJAMS/
 
 ## 🛠️ Tech Stack
 
-| Technology | Purpose |
-|---|---|
-| HTML5 | Page structure |
-| CSS3 | Custom styling |
-| [Bootstrap 5.3](https://getbootstrap.com/) | UI components & layout (CDN) |
-| [Bootstrap Icons 1.11](https://icons.getbootstrap.com/) | Icons (CDN) |
-| Vanilla JavaScript | SPA navigation, modals, data rendering |
+| Technology                                              | Purpose                                |
+| ------------------------------------------------------- | -------------------------------------- |
+| HTML5                                                   | Page structure                         |
+| CSS3                                                    | Custom styling                         |
+| [Bootstrap 5.3](https://getbootstrap.com/)              | UI components & layout (CDN)           |
+| [Bootstrap Icons 1.11](https://icons.getbootstrap.com/) | Icons (CDN)                            |
+| Vanilla JavaScript                                      | SPA navigation, modals, data rendering |
 
 > ⚠️ **No frameworks** (React, Vue, Angular) — pure HTML, CSS, and JavaScript only.  
 > ⚠️ **No backend** — all data is static and stored in `assets/js/data.js`.
@@ -62,6 +62,7 @@ You can run this project in **two ways**. Choose the one that suits your setup.
    ```
 
    Or manually copy the folder so the path is:
+
    ```
    C:\xampp\htdocs\OJAMS\index.html
    ```
@@ -134,10 +135,10 @@ You can run this project in **two ways**. Choose the one that suits your setup.
 
 > This is a prototype — **no real authentication is implemented**. Any input will log you in.
 
-| Field | Value |
-|---|---|
-| Username | `user1` *(pre-filled)* |
-| Password | `password` *(pre-filled)* |
+| Field    | Value                     |
+| -------- | ------------------------- |
+| Username | `user1` _(pre-filled)_    |
+| Password | `password` _(pre-filled)_ |
 
 Simply click the **Login** button. No validation is enforced.
 
@@ -157,6 +158,7 @@ You can switch roles **at any time**, even while logged in.
 ## 📦 Features
 
 ### 👤 User Module
+
 - [x] Login & Registration (modal form)
 - [x] Browse Job listings (searchable cards)
 - [x] Job Application Form (personal info, education, skills, ID upload)
@@ -165,6 +167,7 @@ You can switch roles **at any time**, even while logged in.
 - [x] Logout confirmation modal
 
 ### 🛠️ Admin Module
+
 - [x] Dashboard with stat cards & recent activity log
 - [x] Manage Jobs (Add / Edit / Delete with modals)
 - [x] Applications table (Approve / Reject / View Details)
@@ -175,13 +178,13 @@ You can switch roles **at any time**, even while logged in.
 
 ## ⚠️ Limitations
 
-| Limitation | Details |
-|---|---|
-| No backend | All data is in-memory JavaScript arrays |
-| No database | Data resets on every page refresh |
-| No authentication | Login accepts any input |
-| No file upload | File inputs are UI-only |
-| No real download | Download button shows a toast alert only |
+| Limitation        | Details                                  |
+| ----------------- | ---------------------------------------- |
+| No backend        | All data is in-memory JavaScript arrays  |
+| No database       | Data resets on every page refresh        |
+| No authentication | Login accepts any input                  |
+| No file upload    | File inputs are UI-only                  |
+| No real download  | Download button shows a toast alert only |
 
 ---
 
