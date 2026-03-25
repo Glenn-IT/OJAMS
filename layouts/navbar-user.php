@@ -1,0 +1,62 @@
+<!-- ============================================
+     User Navigation Bar
+     ============================================ -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top">
+    <div class="container">
+        <!-- Brand -->
+        <a class="navbar-brand fw-bold" href="<?php echo $basePath ?? ''; ?>index.php">
+            <i class="bi bi-briefcase-fill me-2"></i>OJAMS
+        </a>
+
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#userNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Nav Links -->
+        <div class="collapse navbar-collapse" id="userNavbar">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link <?php echo ($currentPage ?? '') === 'browse-jobs' ? 'active' : ''; ?>"
+                       href="<?php echo $basePath ?? ''; ?>pages/user/browse-jobs.php">
+                        <i class="bi bi-search me-1"></i>Browse Jobs
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo ($currentPage ?? '') === 'my-applications' ? 'active' : ''; ?>"
+                       href="<?php echo $basePath ?? ''; ?>pages/user/my-applications.php">
+                        <i class="bi bi-file-earmark-text me-1"></i>My Applications
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo ($currentPage ?? '') === 'profile-settings' ? 'active' : ''; ?>"
+                       href="<?php echo $basePath ?? ''; ?>pages/user/profile-settings.php">
+                        <i class="bi bi-person-gear me-1"></i>Profile Settings
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Right Side: User Info & Logout -->
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle me-1"></i>Juan Dela Cruz
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" href="<?php echo $basePath ?? ''; ?>pages/user/profile-settings.php">
+                                <i class="bi bi-gear me-2"></i>Profile Settings
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                                <i class="bi bi-box-arrow-right me-2"></i>Logout
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
