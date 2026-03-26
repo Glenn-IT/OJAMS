@@ -147,7 +147,7 @@ This is a **prototype** for academic/demonstration purposes only. No real authen
 
 ## 📄 License
 This project is for educational purposes.
-
+This is made by Glenard Pagurayan
 ---
 
 &copy; 2026 OJAMS — Online Job Application Monitoring System
