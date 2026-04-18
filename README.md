@@ -86,10 +86,12 @@ OJAMS/
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - **XAMPP** (or any PHP-enabled web server)
 - A modern web browser
 
 ### Installation
+
 1. Clone or copy this project into your web server's document root:
    ```
    C:\xampp\htdocs\OJAMS\
@@ -108,28 +110,32 @@ OJAMS/
 ## 📖 Module Details
 
 ### 🔐 Authentication (Prototype)
+
 - **Login** — Role-based navigation (User / Admin buttons)
 - **Register** — Sample registration form with alert
 - **Logout** — Confirmation modal, redirects to login
 
 ### 👤 User Module
-| Page | Description |
-|------|-------------|
-| **Browse Jobs** | Job cards with title, company, description, qualifications, date, and Apply button |
-| **My Applications** | Table of submitted applications with status badges |
-| **Profile Settings** | View personal info, toggle edit mode |
+
+| Page                 | Description                                                                        |
+| -------------------- | ---------------------------------------------------------------------------------- |
+| **Browse Jobs**      | Job cards with title, company, description, qualifications, date, and Apply button |
+| **My Applications**  | Table of submitted applications with status badges                                 |
+| **Profile Settings** | View personal info, toggle edit mode                                               |
 
 ### 🛡️ Admin Module
-| Page | Description |
-|------|-------------|
-| **Dashboard** | Stat cards (jobs, applicants, pending, approved) + activity history |
-| **Manage Jobs** | Table with Edit/Delete actions + Add New Job modal |
-| **Applications** | Approve/Reject/View details for each applicant |
-| **Reports** | Applicants per job, monthly report, download button |
+
+| Page             | Description                                                         |
+| ---------------- | ------------------------------------------------------------------- |
+| **Dashboard**    | Stat cards (jobs, applicants, pending, approved) + activity history |
+| **Manage Jobs**  | Table with Edit/Delete actions + Add New Job modal                  |
+| **Applications** | Approve/Reject/View details for each applicant                      |
+| **Reports**      | Applicants per job, monthly report, download button                 |
 
 ---
 
 ## 💡 Design Principles
+
 - ✅ Clean, modular PHP structure (MVC-like separation)
 - ✅ Reusable components (`job-card`, `stats-card`, `table-header`, etc.)
 - ✅ PHP `include` for layouts — no duplicate HTML
@@ -141,13 +147,16 @@ OJAMS/
 ---
 
 ## ⚠️ Disclaimer
+
 This is a **prototype** for academic/demonstration purposes only. No real authentication, database, or backend logic is implemented. All actions trigger placeholder alerts.
 
 ---
 
 ## 📄 License
+
 This project is for educational purposes.
 This is made by Glenard Pagurayan
+
 ---
 
 &copy; 2026 OJAMS — Online Job Application Monitoring System
