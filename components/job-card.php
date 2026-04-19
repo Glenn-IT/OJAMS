@@ -29,12 +29,20 @@
             </p>
 
             <!-- Date Posted & Status -->
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
                 <small class="text-muted">
                     <i class="bi bi-calendar-event me-1"></i>Posted: <?php echo $job['date_posted']; ?>
                 </small>
                 <span class="badge <?php echo $job['status'] === 'Open' ? 'bg-success' : 'bg-secondary'; ?>">
                     <?php echo $job['status']; ?>
+                </span>
+            </div>
+
+            <!-- Applicant Count -->
+            <div class="d-flex align-items-center mb-3">
+                <span class="badge bg-light text-dark border me-2">
+                    <i class="bi bi-people-fill text-primary me-1"></i>
+                    <?php echo $job['applicants'] ?? 0; ?> <?php echo ($job['applicants'] ?? 0) == 1 ? 'Applicant' : 'Applicants'; ?>
                 </span>
             </div>
 

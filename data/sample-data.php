@@ -19,7 +19,8 @@ $jobs = [
         "description"   => "Develop and maintain company websites using modern frameworks and technologies.",
         "qualification" => "HTML, CSS, JavaScript, PHP",
         "date_posted"   => "2026-03-20",
-        "status"        => "Open"
+        "status"        => "Open",
+        "applicants"    => 2
     ],
     [
         "id"            => 2,
@@ -28,7 +29,8 @@ $jobs = [
         "description"   => "Provide technical support to end-users and troubleshoot hardware/software issues.",
         "qualification" => "Basic networking and troubleshooting",
         "date_posted"   => "2026-03-18",
-        "status"        => "Open"
+        "status"        => "Open",
+        "applicants"    => 1
     ],
     [
         "id"            => 3,
@@ -37,7 +39,8 @@ $jobs = [
         "description"   => "Analyze datasets and generate actionable insights for business stakeholders.",
         "qualification" => "Excel, SQL, Python, Statistics",
         "date_posted"   => "2026-03-15",
-        "status"        => "Closed"
+        "status"        => "Closed",
+        "applicants"    => 4
     ],
     [
         "id"            => 4,
@@ -46,7 +49,8 @@ $jobs = [
         "description"   => "Design marketing materials, social media assets, and brand collateral.",
         "qualification" => "Adobe Photoshop, Illustrator, Figma",
         "date_posted"   => "2026-03-22",
-        "status"        => "Open"
+        "status"        => "Open",
+        "applicants"    => 3
     ],
     [
         "id"            => 5,
@@ -55,7 +59,8 @@ $jobs = [
         "description"   => "Manage and monitor corporate network infrastructure and security.",
         "qualification" => "CCNA, Network Security, Linux",
         "date_posted"   => "2026-03-10",
-        "status"        => "Open"
+        "status"        => "Open",
+        "applicants"    => 5
     ],
     [
         "id"            => 6,
@@ -64,7 +69,8 @@ $jobs = [
         "description"   => "Build and maintain cross-platform mobile applications for clients.",
         "qualification" => "Flutter, React Native, Dart",
         "date_posted"   => "2026-03-24",
-        "status"        => "Open"
+        "status"        => "Open",
+        "applicants"    => 0
     ]
 ];
 

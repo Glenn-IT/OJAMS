@@ -26,6 +26,12 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
+                            <a class="dropdown-item" href="<?php echo $basePath ?? ''; ?>pages/admin/profile-settings.php">
+                                <i class="bi bi-person-gear me-2"></i>Profile Settings
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
                             <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
                                 <i class="bi bi-box-arrow-right me-2"></i>Logout
                             </a>

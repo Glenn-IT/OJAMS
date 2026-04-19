@@ -63,6 +63,11 @@ include 'layouts/header.php';
                                 Don't have an account?
                                 <a href="register.php" class="text-primary fw-semibold">Register here</a>
                             </p>
+                            <p class="text-muted mt-2 mb-0">
+                                <a href="#" class="text-secondary small" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">
+                                    <i class="bi bi-lock me-1"></i>Forgot your password?
+                                </a>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -77,3 +82,76 @@ include 'layouts/header.php';
 </div>
 
 <?php include 'layouts/footer.php'; ?>
+
+<!-- Forgot Password Modal -->
+<div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="forgotPasswordModalLabel">
+                    <i class="bi bi-lock me-2"></i>Forgot Password
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Step 1: Enter Email -->
+                <div id="fp-step1">
+                    <p class="text-muted mb-3">Enter your registered email address and we'll send you a password reset link.</p>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Email Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                            <input type="email" class="form-control" id="fp-email" placeholder="Enter your email address">
+                        </div>
+                        <div class="invalid-feedback" id="fp-email-error">Please enter a valid email address.</div>
+                    </div>
+                </div>
+                <!-- Step 2: Success Message -->
+                <div id="fp-step2" class="text-center py-3 d-none">
+                    <i class="bi bi-envelope-check-fill text-success display-4 mb-3 d-block"></i>
+                    <h5 class="fw-bold">Reset Link Sent!</h5>
+                    <p class="text-muted">A password reset link has been sent to <strong id="fp-sent-email"></strong>. Please check your inbox.</p>
+                    <p class="text-muted small">(This is a prototype — no actual email is sent.)</p>
+                </div>
+            </div>
+            <div class="modal-footer" id="fp-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-lg me-1"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-primary" onclick="sendResetLink()">
+                    <i class="bi bi-send me-1"></i>Send Reset Link
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function sendResetLink() {
+    const emailInput = document.getElementById('fp-email');
+    const email = emailInput.value.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+        emailInput.classList.add('is-invalid');
+        return;
+    }
+    emailInput.classList.remove('is-invalid');
+    document.getElementById('fp-sent-email').textContent = email;
+    document.getElementById('fp-step1').classList.add('d-none');
+    document.getElementById('fp-step2').classList.remove('d-none');
+    document.getElementById('fp-footer').innerHTML = `
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+            <i class="bi bi-check-lg me-1"></i>Done
+        </button>`;
+}
+// Reset modal state when closed
+document.getElementById('forgotPasswordModal').addEventListener('hidden.bs.modal', function () {
+    document.getElementById('fp-step1').classList.remove('d-none');
+    document.getElementById('fp-step2').classList.add('d-none');
+    document.getElementById('fp-email').value = '';
+    document.getElementById('fp-email').classList.remove('is-invalid');
+    document.getElementById('fp-footer').innerHTML = `
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-lg me-1"></i>Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="sendResetLink()"><i class="bi bi-send me-1"></i>Send Reset Link</button>`;
+});
+</script>

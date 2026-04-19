@@ -35,6 +35,12 @@
                     <i class="bi bi-graph-up me-2"></i>Reports
                 </a>
             </li>
+            <li class="nav-item mb-1">
+                <a class="nav-link text-white <?php echo ($currentPage ?? '') === 'profile-settings' ? 'active bg-primary' : ''; ?>"
+                   href="<?php echo $basePath ?? ''; ?>pages/admin/profile-settings.php">
+                    <i class="bi bi-person-gear me-2"></i>Profile Settings
+                </a>
+            </li>
         </ul>
 
         <!-- Sidebar Footer -->
