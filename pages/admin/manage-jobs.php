@@ -34,7 +34,7 @@ include $basePath . 'layouts/navbar-admin.php';
                     </h2>
                     <p class="text-muted mb-0">Create, edit, and manage job postings.</p>
                 </div>
-                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addJobModal">
+                <button class="btn btn-success" onclick="openAddJobModal()">
                     <i class="bi bi-plus-circle me-1"></i>Add New Job
                 </button>
             </div>
@@ -48,16 +48,16 @@ include $basePath . 'layouts/navbar-admin.php';
                             $columns = ['#', 'Job Title', 'Company', 'Date Posted', 'Status', 'Actions'];
                             include $basePath . 'components/table-header.php';
                             ?>
-                            <tbody>
+                            <tbody id="jobsTableBody">
                                 <?php $count = 1; ?>
                                 <?php foreach ($jobs as $job): ?>
                                     <tr>
                                         <td><?php echo $count++; ?></td>
                                         <td>
                                             <i class="bi bi-briefcase me-1 text-primary"></i>
-                                            <?php echo $job['title']; ?>
+                                            <?php echo htmlspecialchars($job['title']); ?>
                                         </td>
-                                        <td><?php echo $job['company']; ?></td>
+                                        <td><?php echo htmlspecialchars($job['company']); ?></td>
                                         <td><?php echo $job['date_posted']; ?></td>
                                         <td>
                                             <span class="badge <?php echo $job['status'] === 'Open' ? 'bg-success' : 'bg-secondary'; ?>">
@@ -68,13 +68,13 @@ include $basePath . 'layouts/navbar-admin.php';
                                             <!-- Edit Button -->
                                             <button class="btn btn-sm btn-outline-warning me-1"
                                                     data-bs-toggle="modal"
-                                                    data-bs-target="#editJobModal"
-                                                    onclick="editJob('<?php echo $job['title']; ?>', '<?php echo $job['company']; ?>', '<?php echo addslashes($job['description']); ?>', '<?php echo $job['qualification']; ?>', '<?php echo $job['date_posted']; ?>', '<?php echo $job['status']; ?>')">
+                                                    data-bs-target="#addJobModal"
+                                                    onclick="editJob('<?php echo addslashes($job['title']); ?>', '<?php echo addslashes($job['company']); ?>', '<?php echo addslashes($job['description']); ?>', '<?php echo addslashes($job['qualification']); ?>', '<?php echo $job['date_posted']; ?>', '<?php echo $job['status']; ?>', <?php echo $job['id']; ?>)">
                                                 <i class="bi bi-pencil"></i> Edit
                                             </button>
                                             <!-- Delete Button -->
                                             <button class="btn btn-sm btn-outline-danger"
-                                                    onclick="deleteJob('<?php echo $job['title']; ?>')">
+                                                    onclick="deleteJob(<?php echo $job['id']; ?>)">
                                                 <i class="bi bi-trash"></i> Delete
                                             </button>
                                         </td>
@@ -94,3 +94,42 @@ include $basePath . 'layouts/navbar-admin.php';
 <?php include $basePath . 'modals/edit-job-modal.php'; ?>
 
 <?php include $basePath . 'layouts/footer.php'; ?>
+
+<script>
+requireAdmin('../../login.php', '../../pages/user/browse-jobs.php');
+
+/* Render jobs table from localStorage (replaces PHP-rendered rows) */
+function renderJobsTable() {
+    const tbody = document.getElementById('jobsTableBody');
+    if (!tbody) return;
+    const jobs = Jobs.all();
+    if (jobs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-4">No jobs found. Add your first job post!</td></tr>';
+        return;
+    }
+    tbody.innerHTML = jobs.map((job, i) => `
+        <tr>
+            <td>${i + 1}</td>
+            <td><i class="bi bi-briefcase me-1 text-primary"></i>${job.title}</td>
+            <td>${job.company}</td>
+            <td>${job.date_posted}</td>
+            <td><span class="badge ${job.status === 'Open' ? 'bg-success' : 'bg-secondary'}">${job.status}</span></td>
+            <td>
+                <button class="btn btn-sm btn-outline-warning me-1"
+                    onclick="editJob('${escHtml(job.title)}','${escHtml(job.company)}','${escHtml(job.description)}','${escHtml(job.qualification)}','${job.date_posted}','${job.status}',${job.id})"
+                    data-bs-toggle="modal" data-bs-target="#addJobModal">
+                    <i class="bi bi-pencil"></i> Edit
+                </button>
+                <button class="btn btn-sm btn-outline-danger" onclick="deleteJob(${job.id})">
+                    <i class="bi bi-trash"></i> Delete
+                </button>
+            </td>
+        </tr>`).join('');
+}
+
+function escHtml(str) {
+    return (str || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+
+document.addEventListener('DOMContentLoaded', renderJobsTable);
+</script>
