@@ -2,7 +2,7 @@
      Modal: View Application Details (Admin)
      ============================================ -->
 <div class="modal fade" id="viewApplicationModal" tabindex="-1" aria-labelledby="viewApplicationModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <!-- Header -->
             <div class="modal-header bg-primary text-white">
@@ -14,40 +14,40 @@
 
             <!-- Body -->
             <div class="modal-body">
-                <table class="table table-borderless">
-                    <tr>
-                        <th class="text-muted" style="width: 40%;">Applicant Name</th>
-                        <td id="viewAppName">—</td>
-                    </tr>
-                    <tr>
-                        <th class="text-muted">Job Title</th>
-                        <td id="viewAppJobTitle">—</td>
-                    </tr>
-                    <tr>
-                        <th class="text-muted">Date Applied</th>
-                        <td id="viewAppDate">—</td>
-                    </tr>
-                    <tr>
-                        <th class="text-muted">Status</th>
-                        <td id="viewAppStatus">—</td>
-                    </tr>
-                    <tr>
-                        <th class="text-muted">Email</th>
-                        <td>sample@email.com</td>
-                    </tr>
-                    <tr>
-                        <th class="text-muted">Contact</th>
-                        <td>09171234567</td>
-                    </tr>
-                    <tr>
-                        <th class="text-muted">Skills</th>
-                        <td>HTML, CSS, JavaScript, PHP</td>
-                    </tr>
-                    <tr>
-                        <th class="text-muted">Experience</th>
-                        <td>Intern at Sample Corp (2024-2025)</td>
-                    </tr>
-                </table>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <h6 class="fw-bold text-primary border-bottom pb-2">Personal Information</h6>
+                        <table class="table table-borderless table-sm">
+                            <tr><th class="text-muted" style="width:45%;">Full Name</th>    <td id="viewAppName">—</td></tr>
+                            <tr><th class="text-muted">Email</th>                            <td id="viewAppEmail">—</td></tr>
+                            <tr><th class="text-muted">Contact</th>                          <td id="viewAppContact">—</td></tr>
+                            <tr><th class="text-muted">Address</th>                          <td id="viewAppAddress">—</td></tr>
+                            <tr><th class="text-muted">Birthdate</th>                        <td id="viewAppBirthdate">—</td></tr>
+                            <tr><th class="text-muted">Age</th>                              <td id="viewAppAge">—</td></tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="fw-bold text-primary border-bottom pb-2">Application Info</h6>
+                        <table class="table table-borderless table-sm">
+                            <tr><th class="text-muted" style="width:45%;">Job Title</th>    <td id="viewAppJobTitle">—</td></tr>
+                            <tr><th class="text-muted">Company</th>                          <td id="viewAppCompany">—</td></tr>
+                            <tr><th class="text-muted">Date Applied</th>                     <td id="viewAppDate">—</td></tr>
+                            <tr><th class="text-muted">Status</th>                           <td><span id="viewAppStatus" class="badge bg-secondary">—</span></td></tr>
+                        </table>
+                        <h6 class="fw-bold text-primary border-bottom pb-2 mt-3">Education</h6>
+                        <table class="table table-borderless table-sm">
+                            <tr><th class="text-muted" style="width:45%;">Elementary</th>   <td id="viewAppElemSchool">—</td></tr>
+                            <tr><th class="text-muted">Junior HS</th>                        <td id="viewAppJhsSchool">—</td></tr>
+                            <tr><th class="text-muted">Senior HS</th>                        <td id="viewAppShsSchool">—</td></tr>
+                            <tr><th class="text-muted">College</th>                          <td id="viewAppCollege">—</td></tr>
+                        </table>
+                    </div>
+                    <div class="col-12">
+                        <h6 class="fw-bold text-primary border-bottom pb-2">Skills &amp; Experience</h6>
+                        <div class="mb-2"><strong>Skills:</strong> <span id="viewAppSkills">—</span></div>
+                        <div><strong>Experience:</strong> <span id="viewAppExperience">—</span></div>
+                    </div>
+                </div>
             </div>
 
             <!-- Footer -->
