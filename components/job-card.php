@@ -51,7 +51,7 @@
                 <button class="btn btn-primary w-100"
                         data-bs-toggle="modal"
                         data-bs-target="#applyJobModal"
-                        onclick="setApplyJob('<?php echo $job['title']; ?>', '<?php echo $job['company']; ?>')">
+                        onclick="setApplyJob(<?php echo $job['id']; ?>, '<?php echo addslashes($job['title']); ?>', '<?php echo addslashes($job['company']); ?>')">
                     <i class="bi bi-send me-1"></i>Apply Now
                 </button>
             <?php else: ?>
