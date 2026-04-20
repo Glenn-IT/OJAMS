@@ -186,58 +186,72 @@ include $basePath . 'layouts/navbar-admin.php';
 <?php include $basePath . 'modals/logout-modal.php'; ?>
 
 <script>
+requireAdmin('../../login.php', '../../pages/user/browse-jobs.php');
+
+/* ── Load admin profile from localStorage ── */
+document.addEventListener('DOMContentLoaded', () => {
+    const user = Session.get();
+    if (!user) return;
+
+    // Populate card
+    const cardName  = document.querySelector('.card.text-center h5');
+    const cardEmail = document.querySelector('.card.text-center p.text-muted.small');
+    if (cardName)  cardName.textContent  = user.full_name;
+    if (cardEmail) cardEmail.textContent = user.email;
+
+    // Populate form fields
+    const parts = user.full_name.split(' ');
+    const setV  = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || ''; };
+    setV('pi-firstname', parts[0] || '');
+    setV('pi-lastname',  parts.slice(1).join(' ') || '');
+    setV('pi-email',     user.email);
+    setV('pi-contact',   user.contact_number);
+});
+
 function showToast(message, isError = false) {
     if (isError) {
         document.getElementById('error-message').innerHTML = `<i class="bi bi-exclamation-circle me-2"></i>${message}`;
-        const toast = new bootstrap.Toast(document.getElementById('errorToast'));
-        toast.show();
+        new bootstrap.Toast(document.getElementById('errorToast')).show();
     } else {
         document.getElementById('toast-message').innerHTML = `<i class="bi bi-check-circle me-2"></i>${message}`;
-        const toast = new bootstrap.Toast(document.getElementById('successToast'));
-        toast.show();
+        new bootstrap.Toast(document.getElementById('successToast')).show();
     }
 }
 
 function savePersonalInfo() {
     const firstname = document.getElementById('pi-firstname').value.trim();
+    const lastname  = document.getElementById('pi-lastname').value.trim();
     const email     = document.getElementById('pi-email').value.trim();
-    if (!firstname || !email) {
-        showToast('Please fill in all required fields.', true);
-        return;
-    }
+    const contact   = document.getElementById('pi-contact').value.trim();
+    if (!firstname || !email) { showToast('Please fill in all required fields.', true); return; }
+    const session = Session.get();
+    const result  = Users.update(session.id, { full_name: `${firstname} ${lastname}`.trim(), email, contact_number: contact });
+    if (!result.success) { showToast(result.message, true); return; }
     showToast('Personal information updated successfully!');
+    // Update card
+    const cardName  = document.querySelector('.card.text-center h5');
+    const cardEmail = document.querySelector('.card.text-center p.text-muted.small');
+    if (cardName)  cardName.textContent  = result.user.full_name;
+    if (cardEmail) cardEmail.textContent = result.user.email;
 }
 
 function togglePw(id) {
     const input = document.getElementById(id);
     const icon  = document.getElementById('icon-' + id);
-    if (input.type === 'password') {
-        input.type = 'text';
-        icon.className = 'bi bi-eye-slash';
-    } else {
-        input.type = 'password';
-        icon.className = 'bi bi-eye';
-    }
+    input.type = input.type === 'password' ? 'text' : 'password';
+    icon.className = input.type === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash';
 }
 
 function changePassword() {
     const current = document.getElementById('cp-current').value;
     const newPw   = document.getElementById('cp-new').value;
     const confirm = document.getElementById('cp-confirm').value;
-
-    if (!current || !newPw || !confirm) {
-        showToast('Please fill in all password fields.', true);
-        return;
-    }
-    if (newPw.length < 8) {
-        showToast('New password must be at least 8 characters.', true);
-        return;
-    }
-    if (newPw !== confirm) {
-        showToast('New passwords do not match.', true);
-        return;
-    }
-    // Prototype: simulate success
+    const session = Session.get();
+    if (!current || !newPw || !confirm) { showToast('Please fill in all password fields.', true); return; }
+    if (current !== session.password) { showToast('Current password is incorrect.', true); return; }
+    if (newPw.length < 6) { showToast('New password must be at least 6 characters.', true); return; }
+    if (newPw !== confirm) { showToast('New passwords do not match.', true); return; }
+    Users.update(session.id, { password: newPw });
     document.getElementById('cp-current').value = '';
     document.getElementById('cp-new').value     = '';
     document.getElementById('cp-confirm').value = '';
@@ -251,22 +265,20 @@ document.getElementById('cp-new').addEventListener('input', function () {
     const val = this.value;
     const bar = document.getElementById('pw-strength-bar');
     const lbl = document.getElementById('pw-strength-label');
-    let strength = 0;
-    if (val.length >= 8) strength++;
-    if (/[A-Z]/.test(val)) strength++;
-    if (/[0-9]/.test(val)) strength++;
-    if (/[^A-Za-z0-9]/.test(val)) strength++;
-    const levels = [
-        { w: '0%',   cls: '',             text: '' },
-        { w: '25%',  cls: 'bg-danger',    text: 'Weak' },
-        { w: '50%',  cls: 'bg-warning',   text: 'Fair' },
-        { w: '75%',  cls: 'bg-info',      text: 'Good' },
-        { w: '100%', cls: 'bg-success',   text: 'Strong' },
-    ];
-    bar.style.width  = levels[strength].w;
-    bar.className    = 'progress-bar ' + levels[strength].cls;
-    lbl.textContent  = levels[strength].text;
-    lbl.className    = 'small text-muted';
+    let s = 0;
+    if (val.length >= 6) s++;
+    if (/[A-Z]/.test(val)) s++;
+    if (/[0-9]/.test(val)) s++;
+    if (/[^A-Za-z0-9]/.test(val)) s++;
+    const lvl = [
+        { w:'0%',   cls:'',           text:'' },
+        { w:'25%',  cls:'bg-danger',  text:'Weak' },
+        { w:'50%',  cls:'bg-warning', text:'Fair' },
+        { w:'75%',  cls:'bg-info',    text:'Good' },
+        { w:'100%', cls:'bg-success', text:'Strong' },
+    ][s];
+    bar.style.width = lvl.w; bar.className = 'progress-bar ' + lvl.cls;
+    lbl.textContent = lvl.text;
 });
 </script>
 
