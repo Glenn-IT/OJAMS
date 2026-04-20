@@ -26,34 +26,40 @@ include 'layouts/header.php';
                             <p class="text-muted">Online Job Application Monitoring System</p>
                         </div>
 
+                        <!-- Alert Box -->
+                        <div id="loginAlert" class="alert d-none mb-3" role="alert"></div>
+
                         <!-- Login Form -->
-                        <form id="loginForm">
+                        <form id="loginForm" onsubmit="doLogin(event)">
                             <div class="mb-3">
                                 <label class="form-label">Email Address</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                    <input type="email" class="form-control" placeholder="Enter your email" value="user@email.com">
+                                    <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email" required>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Password</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                    <input type="password" class="form-control" placeholder="Enter your password" value="password123">
+                                    <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password" required>
+                                    <button type="button" class="btn btn-outline-secondary" onclick="toggleLoginPass()">
+                                        <i class="bi bi-eye" id="loginEyeIcon"></i>
+                                    </button>
                                 </div>
                             </div>
 
-                            <!-- Role Selection (Prototype Only) -->
-                            <div class="mb-4">
-                                <label class="form-label fw-semibold text-primary">Login As (Prototype)</label>
-                                <div class="d-grid gap-2">
-                                    <a href="pages/user/browse-jobs.php" class="btn btn-primary btn-lg">
-                                        <i class="bi bi-person me-2"></i>Login as User
-                                    </a>
-                                    <a href="pages/admin/dashboard.php" class="btn btn-dark btn-lg">
-                                        <i class="bi bi-shield-lock me-2"></i>Login as Admin
-                                    </a>
-                                </div>
+                            <!-- Quick Login Hints -->
+                            <div class="alert alert-info py-2 small mb-3">
+                                <strong>Demo Accounts:</strong><br>
+                                <i class="bi bi-shield-lock me-1"></i><strong>Admin:</strong> admin@ojams.com / admin123<br>
+                                <i class="bi bi-person me-1"></i><strong>User:</strong> juan@email.com / password123
+                            </div>
+
+                            <div class="d-grid mb-3">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                                </button>
                             </div>
                         </form>
 
@@ -153,5 +159,53 @@ document.getElementById('forgotPasswordModal').addEventListener('hidden.bs.modal
     document.getElementById('fp-footer').innerHTML = `
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-lg me-1"></i>Cancel</button>
         <button type="button" class="btn btn-primary" onclick="sendResetLink()"><i class="bi bi-send me-1"></i>Send Reset Link</button>`;
+});
+</script>
+
+<script>
+/* ── Login Page Logic (localStorage) ── */
+function doLogin(e) {
+    e.preventDefault();
+    const email    = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const alertBox = document.getElementById('loginAlert');
+
+    const result = Users.authenticate(email, password);
+    if (!result.success) {
+        alertBox.className = 'alert alert-danger';
+        alertBox.textContent = result.message;
+        alertBox.classList.remove('d-none');
+        return;
+    }
+
+    // Save session & redirect based on role
+    Session.set(result.user);
+    alertBox.className = 'alert alert-success';
+    alertBox.textContent = `Welcome back, ${result.user.full_name}! Redirecting...`;
+    alertBox.classList.remove('d-none');
+
+    setTimeout(() => {
+        if (result.user.role === 'admin') {
+            window.location.href = 'pages/admin/dashboard.php';
+        } else {
+            window.location.href = 'pages/user/browse-jobs.php';
+        }
+    }, 800);
+}
+
+function toggleLoginPass() {
+    const inp  = document.getElementById('loginPassword');
+    const icon = document.getElementById('loginEyeIcon');
+    if (inp.type === 'password') { inp.type = 'text'; icon.className = 'bi bi-eye-slash'; }
+    else                         { inp.type = 'password'; icon.className = 'bi bi-eye'; }
+}
+
+// Redirect if already logged in
+document.addEventListener('DOMContentLoaded', () => {
+    if (Session.isLoggedIn()) {
+        window.location.href = Session.isAdmin()
+            ? 'pages/admin/dashboard.php'
+            : 'pages/user/browse-jobs.php';
+    }
 });
 </script>
