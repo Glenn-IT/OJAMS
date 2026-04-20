@@ -51,7 +51,7 @@ include $basePath . 'layouts/navbar-admin.php';
                             $columns = ['Applicant Name', 'Job Title', 'Date Applied', 'Status', 'Actions'];
                             include $basePath . 'components/table-header.php';
                             ?>
-                            <tbody>
+                            <tbody id="applicationsTableBody">
                                 <?php foreach ($applications as $app): ?>
                                     <?php include $basePath . 'components/application-row.php'; ?>
                                 <?php endforeach; ?>
@@ -68,3 +68,69 @@ include $basePath . 'layouts/navbar-admin.php';
 <?php include $basePath . 'modals/view-application-modal.php'; ?>
 
 <?php include $basePath . 'layouts/footer.php'; ?>
+
+<script>
+requireAdmin('../../login.php', '../../pages/user/browse-jobs.php');
+
+let _filterStatus = 'All';
+
+function filterByStatus(status) {
+    _filterStatus = status;
+    // Update button styles
+    document.querySelectorAll('.btn-group .btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    renderApplicationsTable();
+}
+
+function renderApplicationsTable() {
+    const tbody = document.getElementById('applicationsTableBody');
+    if (!tbody) return;
+    let apps = Applications.all();
+    if (_filterStatus !== 'All') apps = apps.filter(a => a.status === _filterStatus);
+
+    if (apps.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-4">No ${_filterStatus !== 'All' ? _filterStatus.toLowerCase() : ''} applications found.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = apps.map(a => {
+        const badge = a.status === 'Approved' ? 'bg-success' : a.status === 'Rejected' ? 'bg-danger' : 'bg-warning text-dark';
+        const approveDisabled = a.status === 'Approved' ? 'disabled' : '';
+        const rejectDisabled  = a.status === 'Rejected'  ? 'disabled' : '';
+        return `<tr>
+            <td>${a.user_name}</td>
+            <td>${a.job_title}</td>
+            <td>${a.date_applied}</td>
+            <td><span class="badge ${badge}">${a.status}</span></td>
+            <td>
+                <button class="btn btn-sm btn-outline-success me-1" ${approveDisabled}
+                    onclick="approveApplication(${a.id}, '${a.user_name}')">
+                    <i class="bi bi-check-circle"></i> Approve
+                </button>
+                <button class="btn btn-sm btn-outline-danger me-1" ${rejectDisabled}
+                    onclick="rejectApplication(${a.id}, '${a.user_name}')">
+                    <i class="bi bi-x-circle"></i> Reject
+                </button>
+                <button class="btn btn-sm btn-outline-primary"
+                    data-bs-toggle="modal" data-bs-target="#viewApplicationModal"
+                    onclick="viewApplicationDetails(${a.id})">
+                    <i class="bi bi-eye"></i> View
+                </button>
+            </td>
+        </tr>`;
+    }).join('');
+}
+
+// Override filter buttons
+document.querySelectorAll('.btn-group .btn').forEach(btn => {
+    btn.removeAttribute('onclick');
+    btn.addEventListener('click', function() {
+        _filterStatus = this.textContent.trim();
+        document.querySelectorAll('.btn-group .btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        renderApplicationsTable();
+    });
+});
+
+document.addEventListener('DOMContentLoaded', renderApplicationsTable);
+</script>
