@@ -63,37 +63,37 @@ include $basePath . 'layouts/navbar-user.php';
                                 <th class="text-muted" style="width: 35%;">
                                     <i class="bi bi-person me-2"></i>Full Name
                                 </th>
-                                <td><?php echo $user_profile['full_name']; ?></td>
+                                <td id="pvFullName"><?php echo $user_profile['full_name']; ?></td>
                             </tr>
                             <tr>
                                 <th class="text-muted">
                                     <i class="bi bi-envelope me-2"></i>Email
                                 </th>
-                                <td><?php echo $user_profile['email']; ?></td>
+                                <td id="pvEmail"><?php echo $user_profile['email']; ?></td>
                             </tr>
                             <tr>
                                 <th class="text-muted">
                                     <i class="bi bi-phone me-2"></i>Contact Number
                                 </th>
-                                <td><?php echo $user_profile['contact_number']; ?></td>
+                                <td id="pvContact"><?php echo $user_profile['contact_number']; ?></td>
                             </tr>
                             <tr>
                                 <th class="text-muted">
                                     <i class="bi bi-geo-alt me-2"></i>Address
                                 </th>
-                                <td><?php echo $user_profile['address']; ?></td>
+                                <td id="pvAddress"><?php echo $user_profile['address']; ?></td>
                             </tr>
                             <tr>
                                 <th class="text-muted">
                                     <i class="bi bi-calendar me-2"></i>Birthdate
                                 </th>
-                                <td><?php echo $user_profile['birthdate']; ?></td>
+                                <td id="pvBirthdate"><?php echo $user_profile['birthdate']; ?></td>
                             </tr>
                             <tr>
                                 <th class="text-muted">
                                     <i class="bi bi-lock me-2"></i>Password
                                 </th>
-                                <td><?php echo $user_profile['password']; ?></td>
+                                <td>••••••••••</td>
                             </tr>
                         </table>
                     </div>
@@ -101,25 +101,41 @@ include $basePath . 'layouts/navbar-user.php';
                     <!-- Edit Mode (Hidden by default) -->
                     <div id="profileEdit" style="display: none;">
                         <form id="editProfileForm">
-                            <div class="mb-3">
-                                <label class="form-label">Full Name</label>
-                                <input type="text" class="form-control" value="<?php echo $user_profile['full_name']; ?>">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="editFullName">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="editEmail">
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-control" value="<?php echo $user_profile['email']; ?>">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Contact Number</label>
-                                <input type="tel" class="form-control" value="<?php echo $user_profile['contact_number']; ?>">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Contact Number</label>
+                                    <input type="tel" class="form-control" id="editContact">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Birthdate</label>
+                                    <input type="date" class="form-control" id="editBirthdate">
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Address</label>
-                                <input type="text" class="form-control" value="<?php echo $user_profile['address']; ?>">
+                                <input type="text" class="form-control" id="editAddress">
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">New Password</label>
-                                <input type="password" class="form-control" placeholder="Leave blank to keep current">
+                            <hr>
+                            <p class="text-muted small">Leave blank to keep your current password.</p>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Current Password</label>
+                                    <input type="password" class="form-control" id="editCurrentPassword" placeholder="Enter current password">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">New Password</label>
+                                    <input type="password" class="form-control" id="editNewPassword" placeholder="New password (min 6 chars)">
+                                </div>
                             </div>
                             <div class="d-flex gap-2">
                                 <button type="button" class="btn btn-primary" onclick="saveProfile()">
@@ -138,3 +154,26 @@ include $basePath . 'layouts/navbar-user.php';
 </div>
 
 <?php include $basePath . 'layouts/footer.php'; ?>
+
+<script>
+requireUser('../../login.php', '../../pages/admin/dashboard.php');
+
+/* Render profile view from localStorage session */
+function renderProfileView() {
+    const user = Session.get();
+    if (!user) return;
+    const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val || '—'; };
+    setText('pvFullName',   user.full_name);
+    setText('pvEmail',      user.email);
+    setText('pvContact',    user.contact_number);
+    setText('pvAddress',    user.address);
+    setText('pvBirthdate',  user.birthdate);
+    // Profile card name/email
+    const cardName  = document.querySelector('.card.text-center h5');
+    const cardEmail = document.querySelector('.card.text-center p.text-muted');
+    if (cardName)  cardName.textContent  = user.full_name;
+    if (cardEmail) cardEmail.textContent = user.email;
+}
+
+document.addEventListener('DOMContentLoaded', renderProfileView);
+</script>
