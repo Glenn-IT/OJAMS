@@ -52,7 +52,7 @@ include $basePath . 'layouts/navbar-admin.php';
                             $columns = ['#', 'Job Title', 'Total Applicants', 'Visual'];
                             include $basePath . 'components/table-header.php';
                             ?>
-                            <tbody>
+                            <tbody id="reportPerJobTbody">
                                 <?php $count = 1; ?>
                                 <?php foreach ($applicants_per_job as $row): ?>
                                     <tr>
@@ -98,7 +98,7 @@ include $basePath . 'layouts/navbar-admin.php';
                             $columns = ['#', 'Month', 'Total Applications', 'Visual'];
                             include $basePath . 'components/table-header.php';
                             ?>
-                            <tbody>
+                            <tbody id="reportMonthlyTbody">
                                 <?php $count = 1; ?>
                                 <?php foreach ($monthly_report as $row): ?>
                                     <tr>
@@ -142,3 +142,46 @@ include $basePath . 'layouts/navbar-admin.php';
 </div>
 
 <?php include $basePath . 'layouts/footer.php'; ?>
+
+<script>
+requireAdmin('../../login.php', '../../pages/user/browse-jobs.php');
+
+document.addEventListener('DOMContentLoaded', () => {
+    const apps = Applications.all();
+    const jobs = Jobs.all();
+
+    // Applicants per job
+    const perJobTbody = document.getElementById('reportPerJobTbody');
+    if (perJobTbody) {
+        const counts = {};
+        apps.forEach(a => { const k = a.job_id; counts[k] = (counts[k] || { title: a.job_title, count: 0 }); counts[k].count++; });
+        const rows = Object.values(counts);
+        if (rows.length === 0) {
+            perJobTbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">No data yet.</td></tr>';
+        } else {
+            perJobTbody.innerHTML = rows.map(r => `<tr><td>${r.title}</td><td>${r.count}</td></tr>`).join('');
+        }
+    }
+
+    // Monthly report
+    const monthlyTbody = document.getElementById('reportMonthlyTbody');
+    if (monthlyTbody) {
+        const months = {};
+        apps.forEach(a => {
+            const m = a.date_applied?.slice(0,7) || 'Unknown';
+            if (!months[m]) months[m] = { total: 0, approved: 0, rejected: 0 };
+            months[m].total++;
+            if (a.status === 'Approved') months[m].approved++;
+            if (a.status === 'Rejected') months[m].rejected++;
+        });
+        const entries = Object.entries(months);
+        if (entries.length === 0) {
+            monthlyTbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">No data yet.</td></tr>';
+        } else {
+            monthlyTbody.innerHTML = entries.map(([m, d]) =>
+                `<tr><td>${m}</td><td>${d.total}</td><td><span class="badge bg-success">${d.approved}</span></td><td><span class="badge bg-danger">${d.rejected}</span></td></tr>`
+            ).join('');
+        }
+    }
+});
+</script>
