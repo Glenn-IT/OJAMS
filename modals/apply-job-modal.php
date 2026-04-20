@@ -30,25 +30,25 @@
                     <div class="row mb-3">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Full Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" placeholder="e.g. Juan Dela Cruz" required>
+                            <input type="text" class="form-control" id="appFullName" placeholder="e.g. Juan Dela Cruz" required>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label class="form-label">Birthdate <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" required>
+                            <input type="date" class="form-control" id="appBirthdate" required>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label class="form-label">Age <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" placeholder="e.g. 25" required>
+                            <input type="number" class="form-control" id="appAge" placeholder="e.g. 25" required>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-8 mb-3">
                             <label class="form-label">Address <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" placeholder="e.g. 123 Main St, Quezon City" required>
+                            <input type="text" class="form-control" id="appAddress" placeholder="e.g. 123 Main St, Quezon City" required>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Contact Number <span class="text-danger">*</span></label>
-                            <input type="tel" class="form-control" placeholder="e.g. 09171234567" required>
+                            <input type="tel" class="form-control" id="appContact" placeholder="e.g. 09171234567" required>
                         </div>
                     </div>
 
@@ -59,21 +59,21 @@
                     <div class="row mb-3">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Elementary</label>
-                            <input type="text" class="form-control" placeholder="School name">
+                            <input type="text" class="form-control" id="appElementary" placeholder="School name">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Junior High School (JHS)</label>
-                            <input type="text" class="form-control" placeholder="School name">
+                            <input type="text" class="form-control" id="appJhs" placeholder="School name">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Senior High School (SHS)</label>
-                            <input type="text" class="form-control" placeholder="School name">
+                            <input type="text" class="form-control" id="appShs" placeholder="School name">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">College</label>
-                            <input type="text" class="form-control" placeholder="School name & Course">
+                            <input type="text" class="form-control" id="appCollege" placeholder="School name &amp; Course">
                         </div>
                     </div>
 
@@ -83,11 +83,11 @@
                     </h6>
                     <div class="mb-3">
                         <label class="form-label">Skills</label>
-                        <textarea class="form-control" rows="3" placeholder="e.g. HTML, CSS, JavaScript, Teamwork, Communication"></textarea>
+                        <textarea class="form-control" id="appSkills" rows="3" placeholder="e.g. HTML, CSS, JavaScript, Teamwork, Communication"></textarea>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Work Experience</label>
-                        <textarea class="form-control" rows="3" placeholder="e.g. Intern at ABC Corp (2024-2025)"></textarea>
+                        <textarea class="form-control" id="appExperience" rows="3" placeholder="e.g. Intern at ABC Corp (2024-2025)"></textarea>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Upload Passport Size ID</label>
