@@ -80,7 +80,7 @@ include $basePath . 'layouts/navbar-admin.php';
                             $columns = ['Date', 'Time', 'Action', 'Status'];
                             include $basePath . 'components/table-header.php';
                             ?>
-                            <tbody>
+                            <tbody id="activityTbody">
                                 <?php foreach ($activity_history as $activity): ?>
                                     <tr>
                                         <td><?php echo $activity['date']; ?></td>
@@ -112,3 +112,43 @@ include $basePath . 'layouts/navbar-admin.php';
 </div>
 
 <?php include $basePath . 'layouts/footer.php'; ?>
+
+<script>
+requireAdmin('../../login.php', '../../pages/user/browse-jobs.php');
+
+// Refresh stats from localStorage
+document.addEventListener('DOMContentLoaded', () => {
+    const jobs = Jobs.all();
+    const apps = Applications.all();
+    const pending  = apps.filter(a => a.status === 'Pending').length;
+    const approved = apps.filter(a => a.status === 'Approved').length;
+
+    const statVals = document.querySelectorAll('.stat-value');
+    if (statVals[0]) statVals[0].textContent = jobs.length;
+    if (statVals[1]) statVals[1].textContent = apps.length;
+    if (statVals[2]) statVals[2].textContent = pending;
+    if (statVals[3]) statVals[3].textContent = approved;
+
+    // Render activity log from localStorage
+    const tbody = document.getElementById('activityTbody');
+    if (tbody) {
+        const log = getActivityLog();
+        if (log.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-3">No activity yet.</td></tr>';
+        } else {
+            tbody.innerHTML = log.map(a => `
+                <tr>
+                    <td>${a.date}</td>
+                    <td>${a.time}</td>
+                    <td>${a.action}</td>
+                    <td><span class="badge ${statusBadgeClass(a.status)}">${a.status}</span></td>
+                </tr>`).join('');
+        }
+    }
+
+    // Show logged-in admin name
+    const user = Session.get();
+    const nameEls = document.querySelectorAll('.navbar-admin-name, #adminNavName');
+    nameEls.forEach(el => { if (el) el.textContent = user?.full_name || 'Administrator'; });
+});
+</script>
